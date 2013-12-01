@@ -288,6 +288,14 @@ EOT
                     return $val !== 'false' && (bool) $val;
                 }
             ),
+            'minimum-stability' => array(
+                function ($val) { return in_array($val, array('dev', 'alpha', 'beta', 'RC', 'stable'), true); },
+                function ($val) { return $val; }
+            ),
+            'prefer-stable' => array(
+                function ($val) { return in_array($val, array('true', 'false', '0', '1'), true); },
+                function ($val) { return $val !== 'false' && (bool) $val; }
+            ),
         );
         $multiConfigValues = array(
             'github-protocols' => array(
