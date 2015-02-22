@@ -30,11 +30,11 @@ class HgDownloader extends VcsDownloader
         $this->io->write("    Cloning ".$package->getSourceReference());
         $command = sprintf('hg clone %s %s', $url, ProcessExecutor::escape($path));
         if (0 !== $this->process->execute($command, $ignoredOutput)) {
-            throw new \RuntimeException('Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to execute '.$command."\n\n".$this->process->getErrorOutput());
         }
         $command = sprintf('hg up %s', $ref);
         if (0 !== $this->process->execute($command, $ignoredOutput, realpath($path))) {
-            throw new \RuntimeException('Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to execute '.$command."\n\n".$this->process->getErrorOutput());
         }
     }
 
@@ -53,7 +53,7 @@ class HgDownloader extends VcsDownloader
 
         $command = sprintf('hg pull %s && hg up %s', $url, $ref);
         if (0 !== $this->process->execute($command, $ignoredOutput, realpath($path))) {
-            throw new \RuntimeException('Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to execute '.$command."\n\n".$this->process->getErrorOutput());
         }
     }
 
@@ -79,7 +79,7 @@ class HgDownloader extends VcsDownloader
         $command = sprintf('hg log -r %s:%s --style compact', $fromReference, $toReference);
 
         if (0 !== $this->process->execute($command, $output, realpath($path))) {
-            throw new \RuntimeException('Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to execute '.$command."\n\n".$this->process->getErrorOutput());
         }
 
         return $output;

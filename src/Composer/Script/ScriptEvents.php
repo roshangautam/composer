@@ -157,7 +157,7 @@ class ScriptEvents
 
     /**
      * The POST_CREATE_PROJECT event occurs after the create-project command has been executed.
-     * Note: Event occurs after POST_INSTALL_CMD
+     * Note: Event occurs after POST_INSTALL_CMD.
      *
      * The event listener method receives a Composer\Script\PackageEvent instance.
      *

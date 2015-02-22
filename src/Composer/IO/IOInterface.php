@@ -159,7 +159,7 @@ interface IOInterface
     public function setAuthentication($repositoryName, $username, $password = null);
 
     /**
-     * Loads authentications from a config instance
+     * Loads authentications from a config instance.
      *
      * @param Config $config
      */

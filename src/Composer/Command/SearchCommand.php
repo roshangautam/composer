@@ -55,14 +55,14 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // init repos
-        $platformRepo = new PlatformRepository;
+        $platformRepo = new PlatformRepository();
         if ($composer = $this->getComposer(false)) {
             $localRepo = $composer->getRepositoryManager()->getLocalRepository();
             $installedRepo = new CompositeRepository(array($localRepo, $platformRepo));
             $repos = new CompositeRepository(array_merge(array($installedRepo), $composer->getRepositoryManager()->getRepositories()));
         } else {
             $defaultRepos = Factory::createDefaultRepositories($this->getIO());
-            $output->writeln('No composer.json found in the current directory, showing packages from ' . implode(', ', array_keys($defaultRepos)));
+            $output->writeln('No composer.json found in the current directory, showing packages from '.implode(', ', array_keys($defaultRepos)));
             $installedRepo = $platformRepo;
             $repos = new CompositeRepository(array_merge(array($installedRepo), $defaultRepos));
         }
@@ -78,7 +78,7 @@ EOT
         $results = $repos->search(implode(' ', $input->getArgument('tokens')), $flags);
 
         foreach ($results as $result) {
-            $output->writeln($result['name'] . (isset($result['description']) ? ' '. $result['description'] : ''));
+            $output->writeln($result['name'].(isset($result['description']) ? ' '.$result['description'] : ''));
         }
     }
 }

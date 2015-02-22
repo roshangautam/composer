@@ -17,7 +17,7 @@ use Composer\Util\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Reads/writes to a filesystem cache
+ * Reads/writes to a filesystem cache.
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -39,7 +39,7 @@ class Cache
     public function __construct(IOInterface $io, $cacheDir, $whitelist = 'a-z0-9.', Filesystem $filesystem = null)
     {
         $this->io = $io;
-        $this->root = rtrim($cacheDir, '/\\') . '/';
+        $this->root = rtrim($cacheDir, '/\\').'/';
         $this->whitelist = $whitelist;
         $this->filesystem = $filesystem ?: new Filesystem();
 
@@ -63,12 +63,12 @@ class Cache
     public function read($file)
     {
         $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
-        if ($this->enabled && file_exists($this->root . $file)) {
+        if ($this->enabled && file_exists($this->root.$file)) {
             if ($this->io->isDebug()) {
-                $this->io->write('Reading '.$this->root . $file.' from cache');
+                $this->io->write('Reading '.$this->root.$file.' from cache');
             }
 
-            return file_get_contents($this->root . $file);
+            return file_get_contents($this->root.$file);
         }
 
         return false;
@@ -80,22 +80,22 @@ class Cache
             $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
 
             if ($this->io->isDebug()) {
-                $this->io->write('Writing '.$this->root . $file.' into cache');
+                $this->io->write('Writing '.$this->root.$file.' into cache');
             }
 
             try {
-                return file_put_contents($this->root . $file, $contents);
+                return file_put_contents($this->root.$file, $contents);
             } catch (\ErrorException $e) {
                 if (preg_match('{^file_put_contents\(\): Only ([0-9]+) of ([0-9]+) bytes written}', $e->getMessage(), $m)) {
                     // Remove partial file.
-                    unlink($this->root . $file);
+                    unlink($this->root.$file);
 
                     $message = sprintf(
                         '<warning>Writing %1$s into cache failed after %2$u of %3$u bytes written, only %4$u bytes of free space available</warning>',
-                        $this->root . $file,
+                        $this->root.$file,
                         $m[1],
                         $m[2],
-                        @disk_free_space($this->root . dirname($file))
+                        @disk_free_space($this->root.dirname($file))
                     );
 
                     $this->io->write($message);
@@ -111,38 +111,38 @@ class Cache
     }
 
     /**
-     * Copy a file into the cache
+     * Copy a file into the cache.
      */
     public function copyFrom($file, $source)
     {
         if ($this->enabled) {
             $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
-            $this->filesystem->ensureDirectoryExists(dirname($this->root . $file));
+            $this->filesystem->ensureDirectoryExists(dirname($this->root.$file));
 
             if ($this->io->isDebug()) {
-                $this->io->write('Writing '.$this->root . $file.' into cache');
+                $this->io->write('Writing '.$this->root.$file.' into cache');
             }
 
-            return copy($source, $this->root . $file);
+            return copy($source, $this->root.$file);
         }
 
         return false;
     }
 
     /**
-     * Copy a file out of the cache
+     * Copy a file out of the cache.
      */
     public function copyTo($file, $target)
     {
         $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
-        if ($this->enabled && file_exists($this->root . $file)) {
-            touch($this->root . $file);
+        if ($this->enabled && file_exists($this->root.$file)) {
+            touch($this->root.$file);
 
             if ($this->io->isDebug()) {
-                $this->io->write('Reading '.$this->root . $file.' from cache');
+                $this->io->write('Reading '.$this->root.$file.' from cache');
             }
 
-            return copy($this->root . $file, $target);
+            return copy($this->root.$file, $target);
         }
 
         return false;
@@ -156,8 +156,8 @@ class Cache
     public function remove($file)
     {
         $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
-        if ($this->enabled && file_exists($this->root . $file)) {
-            return $this->filesystem->unlink($this->root . $file);
+        if ($this->enabled && file_exists($this->root.$file)) {
+            return $this->filesystem->unlink($this->root.$file);
         }
 
         return false;
@@ -196,8 +196,8 @@ class Cache
     public function sha1($file)
     {
         $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
-        if ($this->enabled && file_exists($this->root . $file)) {
-            return sha1_file($this->root . $file);
+        if ($this->enabled && file_exists($this->root.$file)) {
+            return sha1_file($this->root.$file);
         }
 
         return false;
@@ -206,8 +206,8 @@ class Cache
     public function sha256($file)
     {
         $file = preg_replace('{[^'.$this->whitelist.']}i', '-', $file);
-        if ($this->enabled && file_exists($this->root . $file)) {
-            return hash_file('sha256', $this->root . $file);
+        if ($this->enabled && file_exists($this->root.$file)) {
+            return hash_file('sha256', $this->root.$file);
         }
 
         return false;

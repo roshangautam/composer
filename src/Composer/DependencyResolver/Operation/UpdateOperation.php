@@ -75,6 +75,6 @@ class UpdateOperation extends SolverOperation
     public function __toString()
     {
         return 'Updating '.$this->initialPackage->getPrettyName().' ('.$this->formatVersion($this->initialPackage).') to '.
-            $this->targetPackage->getPrettyName(). ' ('.$this->formatVersion($this->targetPackage).')';
+            $this->targetPackage->getPrettyName().' ('.$this->formatVersion($this->targetPackage).')';
     }
 }

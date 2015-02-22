@@ -241,7 +241,7 @@ EOT
             $json = new JsonFile($repositoryUrl, new RemoteFilesystem($io, $config));
             $data = $json->read();
             if (!empty($data['packages']) || !empty($data['includes']) || !empty($data['provider-includes'])) {
-                $sourceRepo = new ComposerRepository(array('url' => 'file://' . strtr(realpath($repositoryUrl), '\\', '/')), $io, $config);
+                $sourceRepo = new ComposerRepository(array('url' => 'file://'.strtr(realpath($repositoryUrl), '\\', '/')), $io, $config);
             } else {
                 $sourceRepo = new FilesystemRepository($json);
             }
@@ -280,15 +280,15 @@ EOT
         $package = $versionSelector->findBestCandidate($name, $packageVersion);
 
         if (!$package) {
-            throw new \InvalidArgumentException("Could not find package $name" . ($packageVersion ? " with version $packageVersion." : " with stability $stability."));
+            throw new \InvalidArgumentException("Could not find package $name".($packageVersion ? " with version $packageVersion." : " with stability $stability."));
         }
 
         if (null === $directory) {
             $parts = explode("/", $name, 2);
-            $directory = getcwd() . DIRECTORY_SEPARATOR . array_pop($parts);
+            $directory = getcwd().DIRECTORY_SEPARATOR.array_pop($parts);
         }
 
-        $io->write('<info>Installing ' . $package->getName() . ' (' . VersionParser::formatVersion($package, false) . ')</info>');
+        $io->write('<info>Installing '.$package->getName().' ('.VersionParser::formatVersion($package, false).')</info>');
 
         if ($disablePlugins) {
             $io->write('<info>Plugins have been disabled.</info>');
@@ -311,7 +311,7 @@ EOT
 
         $installedFromVcs = 'source' === $package->getInstallationSource();
 
-        $io->write('<info>Created project in ' . $directory . '</info>');
+        $io->write('<info>Created project in '.$directory.'</info>');
         chdir($directory);
 
         putenv('COMPOSER_ROOT_VERSION='.$package->getPrettyVersion());
@@ -332,7 +332,8 @@ EOT
     }
 
     /**
-     * Updated preferSource or preferDist based on the preferredInstall config option
+     * Updated preferSource or preferDist based on the preferredInstall config option.
+     *
      * @param Config         $config
      * @param InputInterface $input
      * @param boolean        $preferSource

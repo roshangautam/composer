@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Composer\IO\IOInterface;
 
 /**
- * ClassMapGenerator
+ * ClassMapGenerator.
  *
  * @author Gyula Sallai <salla016@gmail.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -25,7 +25,7 @@ use Composer\IO\IOInterface;
 class ClassMapGenerator
 {
     /**
-     * Generate a class map file
+     * Generate a class map file.
      *
      * @param \Traversable $dirs Directories or a single path to search in
      * @param string       $file The name of the class map file
@@ -42,7 +42,7 @@ class ClassMapGenerator
     }
 
     /**
-     * Iterate over all files in the given directory searching for classes
+     * Iterate over all files in the given directory searching for classes.
      *
      * @param \Iterator|string $path      The path to search in or an iterator
      * @param string           $whitelist Regex that matches against the file path
@@ -104,11 +104,13 @@ class ClassMapGenerator
     }
 
     /**
-     * Extract the classes in the given file
+     * Extract the classes in the given file.
      *
-     * @param  string            $path The file to check
+     * @param string $path The file to check
+     *
      * @throws \RuntimeException
-     * @return array             The found classes
+     *
+     * @return array The found classes
      */
     private static function findClasses($path)
     {
@@ -164,14 +166,14 @@ class ClassMapGenerator
 
         for ($i = 0, $len = count($matches['type']); $i < $len; $i++) {
             if (!empty($matches['ns'][$i])) {
-                $namespace = str_replace(array(' ', "\t", "\r", "\n"), '', $matches['nsname'][$i]) . '\\';
+                $namespace = str_replace(array(' ', "\t", "\r", "\n"), '', $matches['nsname'][$i]).'\\';
             } else {
                 $name = $matches['name'][$i];
                 if ($name[0] === ':') {
                     // This is an XHP class, https://github.com/facebook/xhp
                     $name = 'xhp'.substr(str_replace(array('-', ':'), array('_', '__'), $name), 1);
                 }
-                $classes[] = ltrim($namespace . $name, '\\');
+                $classes[] = ltrim($namespace.$name, '\\');
             }
         }
 

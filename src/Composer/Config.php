@@ -54,7 +54,7 @@ class Config
             'type' => 'composer',
             'url' => 'https?://packagist.org',
             'allow_ssl_downgrade' => true,
-        )
+        ),
     );
 
     private $config;
@@ -97,7 +97,7 @@ class Config
     }
 
     /**
-     * Merges new config values with the existing ones (overriding)
+     * Merges new config values with the existing ones (overriding).
      *
      * @param array $config
      */
@@ -150,11 +150,13 @@ class Config
     }
 
     /**
-     * Returns a setting
+     * Returns a setting.
      *
-     * @param  string            $key
-     * @param  int               $flags Options (see class constants)
+     * @param string $key
+     * @param int    $flags Options (see class constants)
+     *
      * @throws \RuntimeException
+     *
      * @return mixed
      */
     public function get($key, $flags = 0)
@@ -168,10 +170,10 @@ class Config
             case 'cache-repo-dir':
             case 'cache-vcs-dir':
                 // convert foo-bar to COMPOSER_FOO_BAR and check if it exists since it overrides the local config
-                $env = 'COMPOSER_' . strtoupper(strtr($key, '-', '_'));
+                $env = 'COMPOSER_'.strtoupper(strtr($key, '-', '_'));
 
                 $val = rtrim($this->process($this->getComposerEnv($env) ?: $this->config[$key], $flags), '/\\');
-                $val = preg_replace('#^(\$HOME|~)(/|$)#', rtrim(getenv('HOME') ?: getenv('USERPROFILE'), '/\\') . '/', $val);
+                $val = preg_replace('#^(\$HOME|~)(/|$)#', rtrim(getenv('HOME') ?: getenv('USERPROFILE'), '/\\').'/', $val);
 
                 if (substr($key, -4) !== '-dir') {
                     return $val;
@@ -247,7 +249,7 @@ class Config
 
             default:
                 if (!isset($this->config[$key])) {
-                    return null;
+                    return;
                 }
 
                 return $this->process($this->config[$key], $flags);
@@ -275,9 +277,10 @@ class Config
     }
 
     /**
-     * Checks whether a setting exists
+     * Checks whether a setting exists.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return bool
      */
     public function has($key)
@@ -286,10 +289,11 @@ class Config
     }
 
     /**
-     * Replaces {$refs} inside a config string
+     * Replaces {$refs} inside a config string.
      *
-     * @param  string $value a config string that can contain {$refs-to-other-config}
-     * @param  int    $flags Options (see class constants)
+     * @param string $value a config string that can contain {$refs-to-other-config}
+     * @param int    $flags Options (see class constants)
+     *
      * @return string
      */
     private function process($value, $flags)
@@ -306,11 +310,12 @@ class Config
     }
 
     /**
-     * Turns relative paths in absolute paths without realpath()
+     * Turns relative paths in absolute paths without realpath().
      *
      * Since the dirs might not exist yet we can not call realpath or it will fail.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return string
      */
     private function realpath($path)
@@ -319,16 +324,17 @@ class Config
             return $path;
         }
 
-        return $this->baseDir . '/' . $path;
+        return $this->baseDir.'/'.$path;
     }
 
     /**
-     * Reads the value of a Composer environment variable
+     * Reads the value of a Composer environment variable.
      *
      * This should be used to read COMPOSER_ environment variables
      * that overload config values.
      *
-     * @param  string         $var
+     * @param string $var
+     *
      * @return string|boolean
      */
     private function getComposerEnv($var)

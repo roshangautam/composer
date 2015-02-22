@@ -33,7 +33,6 @@ use Composer\Json\JsonFile;
 use Composer\Package\AliasPackage;
 use Composer\Package\CompletePackage;
 use Composer\Package\Link;
-use Composer\Package\LinkConstraint\EmptyConstraint;
 use Composer\Package\LinkConstraint\VersionConstraint;
 use Composer\Package\Locker;
 use Composer\Package\PackageInterface;
@@ -112,7 +111,7 @@ class Installer
     protected $preferStable = false;
     protected $preferLowest = false;
     /**
-     * Array of package names/globs flagged for update
+     * Array of package names/globs flagged for update.
      *
      * @var array|null
      */
@@ -130,7 +129,7 @@ class Installer
     protected $additionalInstalledRepository;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param IOInterface          $io
      * @param Config               $config
@@ -156,7 +155,7 @@ class Installer
     }
 
     /**
-     * Run installation (or update)
+     * Run installation (or update).
      *
      * @return int 0 on success or a positive error code on failure
      *
@@ -170,7 +169,7 @@ class Installer
         if ($this->dryRun) {
             $this->verbose = true;
             $this->runScripts = false;
-            $this->installationManager->addInstaller(new NoopInstaller);
+            $this->installationManager->addInstaller(new NoopInstaller());
             $this->mockLocalRepositories($this->repositoryManager);
         }
 
@@ -255,7 +254,7 @@ class Installer
             }
 
             $replacement = (is_string($package->getReplacementPackage()))
-                ? 'Use ' . $package->getReplacementPackage() . ' instead'
+                ? 'Use '.$package->getReplacementPackage().' instead'
                 : 'No replacement was suggested';
 
             $this->io->write(
@@ -554,7 +553,7 @@ class Installer
                     && $operation->getTargetPackage()->getSourceReference() === $operation->getInitialPackage()->getSourceReference()
                 ) {
                     if ($this->io->isDebug()) {
-                        $this->io->write('  - Skipping update of '. $operation->getTargetPackage()->getPrettyName().' to the same reference-locked version');
+                        $this->io->write('  - Skipping update of '.$operation->getTargetPackage()->getPrettyName().' to the same reference-locked version');
                         $this->io->write('');
                     }
 
@@ -569,10 +568,10 @@ class Installer
 
             // output non-alias ops in dry run, output alias ops in debug verbosity
             if ($this->dryRun && false === strpos($operation->getJobType(), 'Alias')) {
-                $this->io->write('  - ' . $operation);
+                $this->io->write('  - '.$operation);
                 $this->io->write('');
             } elseif ($this->io->isDebug() && false !== strpos($operation->getJobType(), 'Alias')) {
-                $this->io->write('  - ' . $operation);
+                $this->io->write('  - '.$operation);
                 $this->io->write('');
             }
 
@@ -618,7 +617,8 @@ class Installer
      * it at least fixes the symptoms and makes usage of composer possible (again)
      * in such scenarios.
      *
-     * @param  OperationInterface[] $operations
+     * @param OperationInterface[] $operations
+     *
      * @return OperationInterface[] reordered operation list
      */
     private function movePluginsToFront(array $operations)
@@ -654,9 +654,10 @@ class Installer
 
     /**
      * Removals of packages should be executed before installations in
-     * case two packages resolve to the same path (due to custom installers)
+     * case two packages resolve to the same path (due to custom installers).
      *
-     * @param  OperationInterface[] $operations
+     * @param OperationInterface[] $operations
+     *
      * @return OperationInterface[] reordered operation list
      */
     private function moveUninstallsToFront(array $operations)
@@ -882,7 +883,7 @@ class Installer
         foreach ($aliases as $alias) {
             $normalizedAliases[$alias['package']][$alias['version']] = array(
                 'alias' => $alias['alias'],
-                'alias_normalized' => $alias['alias_normalized']
+                'alias_normalized' => $alias['alias_normalized'],
             );
         }
 
@@ -920,16 +921,17 @@ class Installer
     }
 
     /**
-     * Build a regexp from a package name, expanding * globs as required
+     * Build a regexp from a package name, expanding * globs as required.
      *
-     * @param  string $whiteListedPattern
+     * @param string $whiteListedPattern
+     *
      * @return string
      */
     private function packageNameToRegexp($whiteListedPattern)
     {
         $cleanedWhiteListedPattern = str_replace('\\*', '.*', preg_quote($whiteListedPattern));
 
-        return "{^" . $cleanedWhiteListedPattern . "$}i";
+        return "{^".$cleanedWhiteListedPattern."$}i";
     }
 
     private function extractPlatformRequirements($links)
@@ -976,7 +978,7 @@ class Installer
             $skipPackages[$require->getTarget()] = true;
         }
 
-        $pool = new Pool;
+        $pool = new Pool();
         $pool->addRepository($localRepo);
 
         $seen = array();
@@ -984,7 +986,7 @@ class Installer
         $rootRequiredPackageNames = array_keys($rootRequires);
 
         foreach ($this->updateWhitelist as $packageName => $void) {
-            $packageQueue = new \SplQueue;
+            $packageQueue = new \SplQueue();
 
             $depPackages = $pool->whatProvides($packageName);
 
@@ -1002,7 +1004,7 @@ class Installer
             }
 
             if (count($depPackages) == 0 && !$nameMatchesRequiredPackage && !in_array($packageName, array('nothing', 'lock'))) {
-                $this->io->write('<warning>Package "' . $packageName . '" listed for update is not installed. Ignoring.</warning>');
+                $this->io->write('<warning>Package "'.$packageName.'" listed for update is not installed. Ignoring.</warning>');
             }
 
             foreach ($depPackages as $depPackage) {
@@ -1039,7 +1041,7 @@ class Installer
     }
 
     /**
-     * Replace local repositories with InstalledArrayRepository instances
+     * Replace local repositories with InstalledArrayRepository instances.
      *
      * This is to prevent any accidental modification of the existing repos on disk
      *
@@ -1063,10 +1065,11 @@ class Installer
     }
 
     /**
-     * Create Installer
+     * Create Installer.
      *
-     * @param  IOInterface $io
-     * @param  Composer    $composer
+     * @param IOInterface $io
+     * @param Composer    $composer
+     *
      * @return Installer
      */
     public static function create(IOInterface $io, Composer $composer)
@@ -1092,9 +1095,10 @@ class Installer
     }
 
     /**
-     * Whether to run in drymode or not
+     * Whether to run in drymode or not.
      *
-     * @param  boolean   $dryRun
+     * @param boolean $dryRun
+     *
      * @return Installer
      */
     public function setDryRun($dryRun = true)
@@ -1115,9 +1119,10 @@ class Installer
     }
 
     /**
-     * prefer source installation
+     * prefer source installation.
      *
-     * @param  boolean   $preferSource
+     * @param boolean $preferSource
+     *
      * @return Installer
      */
     public function setPreferSource($preferSource = true)
@@ -1128,9 +1133,10 @@ class Installer
     }
 
     /**
-     * prefer dist installation
+     * prefer dist installation.
      *
-     * @param  boolean   $preferDist
+     * @param boolean $preferDist
+     *
      * @return Installer
      */
     public function setPreferDist($preferDist = true)
@@ -1141,9 +1147,10 @@ class Installer
     }
 
     /**
-     * Whether or not generated autoloader are optimized
+     * Whether or not generated autoloader are optimized.
      *
-     * @param  bool      $optimizeAutoloader
+     * @param bool $optimizeAutoloader
+     *
      * @return Installer
      */
     public function setOptimizeAutoloader($optimizeAutoloader = false)
@@ -1154,9 +1161,10 @@ class Installer
     }
 
     /**
-     * update packages
+     * update packages.
      *
-     * @param  boolean   $update
+     * @param boolean $update
+     *
      * @return Installer
      */
     public function setUpdate($update = true)
@@ -1167,9 +1175,10 @@ class Installer
     }
 
     /**
-     * enables dev packages
+     * enables dev packages.
      *
-     * @param  boolean   $devMode
+     * @param boolean $devMode
+     *
      * @return Installer
      */
     public function setDevMode($devMode = true)
@@ -1179,11 +1188,11 @@ class Installer
         return $this;
     }
 
-
     /**
-     * set whether to run autoloader or not
+     * set whether to run autoloader or not.
      *
      * @param boolean $dumpAutoloader
+     *
      * @return Installer
      */
     public function setDumpAutoloader($dumpAutoloader = true)
@@ -1193,11 +1202,11 @@ class Installer
         return $this;
     }
 
-
     /**
-     * set whether to run scripts or not
+     * set whether to run scripts or not.
      *
-     * @param  boolean   $runScripts
+     * @param boolean $runScripts
+     *
      * @return Installer
      */
     public function setRunScripts($runScripts = true)
@@ -1208,9 +1217,10 @@ class Installer
     }
 
     /**
-     * set the config instance
+     * set the config instance.
      *
-     * @param  Config    $config
+     * @param Config $config
+     *
      * @return Installer
      */
     public function setConfig(Config $config)
@@ -1221,9 +1231,10 @@ class Installer
     }
 
     /**
-     * run in verbose mode
+     * run in verbose mode.
      *
-     * @param  boolean   $verbose
+     * @param boolean $verbose
+     *
      * @return Installer
      */
     public function setVerbose($verbose = true)
@@ -1244,9 +1255,10 @@ class Installer
     }
 
     /**
-     * set ignore Platform Package requirements
+     * set ignore Platform Package requirements.
      *
-     * @param  boolean   $ignorePlatformReqs
+     * @param boolean $ignorePlatformReqs
+     *
      * @return Installer
      */
     public function setIgnorePlatformRequirements($ignorePlatformReqs = false)
@@ -1258,9 +1270,10 @@ class Installer
 
     /**
      * restrict the update operation to a few packages, all other packages
-     * that are already installed will be kept at their current version
+     * that are already installed will be kept at their current version.
      *
-     * @param  array     $packages
+     * @param array $packages
+     *
      * @return Installer
      */
     public function setUpdateWhitelist(array $packages)
@@ -1273,7 +1286,8 @@ class Installer
     /**
      * Should dependencies of whitelisted packages be updated recursively?
      *
-     * @param  boolean   $updateDependencies
+     * @param boolean $updateDependencies
+     *
      * @return Installer
      */
     public function setWhitelistDependencies($updateDependencies = true)
@@ -1286,7 +1300,8 @@ class Installer
     /**
      * Should packages be prefered in a stable version when updating?
      *
-     * @param  boolean   $preferStable
+     * @param boolean $preferStable
+     *
      * @return Installer
      */
     public function setPreferStable($preferStable = true)
@@ -1299,7 +1314,8 @@ class Installer
     /**
      * Should packages be prefered in a lowest version when updating?
      *
-     * @param  boolean   $preferLowest
+     * @param boolean $preferLowest
+     *
      * @return Installer
      */
     public function setPreferLowest($preferLowest = true)

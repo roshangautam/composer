@@ -103,7 +103,7 @@ class ConsoleIO extends BaseIO
             }, (array) $messages);
         }
         $this->output->write($messages, $newline);
-        $this->lastMessage = join($newline ? "\n" : '', (array) $messages);
+        $this->lastMessage = implode($newline ? "\n" : '', (array) $messages);
     }
 
     /**
@@ -120,7 +120,7 @@ class ConsoleIO extends BaseIO
         }
 
         // messages can be an array, let's convert it to string anyway
-        $messages = join($newline ? "\n" : '', (array) $messages);
+        $messages = implode($newline ? "\n" : '', (array) $messages);
 
         // since overwrite is supposed to overwrite last message...
         if (!isset($size)) {

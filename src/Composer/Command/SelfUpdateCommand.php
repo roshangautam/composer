@@ -58,7 +58,7 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $baseUrl = (extension_loaded('openssl') ? 'https' : 'http') . '://' . self::HOMEPAGE;
+        $baseUrl = (extension_loaded('openssl') ? 'https' : 'http').'://'.self::HOMEPAGE;
         $config = Factory::createConfig();
         $remoteFilesystem = new RemoteFilesystem($this->getIO(), $config);
         $cacheDir = $config->get('cache-dir');
@@ -80,7 +80,7 @@ EOT
             return $this->rollback($output, $rollbackDir, $localFilename);
         }
 
-        $latestVersion = trim($remoteFilesystem->getContents(self::HOMEPAGE, $baseUrl. '/version', false));
+        $latestVersion = trim($remoteFilesystem->getContents(self::HOMEPAGE, $baseUrl.'/version', false));
         $updateVersion = $input->getArgument('version') ?: $latestVersion;
 
         if (preg_match('{^[0-9a-f]{40}$}', $updateVersion) && $updateVersion !== $latestVersion) {
@@ -95,7 +95,7 @@ EOT
             return 0;
         }
 
-        $tempFilename = $tmpDir . '/' . basename($localFilename, '.phar').'-temp.phar';
+        $tempFilename = $tmpDir.'/'.basename($localFilename, '.phar').'-temp.phar';
         $backupFile = sprintf(
             '%s/%s-%s%s',
             $rollbackDir,
@@ -105,7 +105,7 @@ EOT
         );
 
         $output->writeln(sprintf("Updating to version <info>%s</info>.", $updateVersion));
-        $remoteFilename = $baseUrl . (preg_match('{^[0-9a-f]{40}$}', $updateVersion) ? '/composer.phar' : "/download/{$updateVersion}/composer.phar");
+        $remoteFilename = $baseUrl.(preg_match('{^[0-9a-f]{40}$}', $updateVersion) ? '/composer.phar' : "/download/{$updateVersion}/composer.phar");
         $remoteFilesystem->copy(self::HOMEPAGE, $remoteFilename, $tempFilename, !$input->getOption('no-progress'));
         if (!file_exists($tempFilename)) {
             $output->writeln('<error>The download of the new composer version failed for an unexpected reason</error>');
@@ -117,7 +117,7 @@ EOT
         if ($input->getOption('clean-backups')) {
             $finder = $this->getOldInstallationFinder($rollbackDir);
 
-            $fs = new Filesystem;
+            $fs = new Filesystem();
             foreach ($finder as $file) {
                 $file = (string) $file;
                 $output->writeln('<info>Removing: '.$file.'</info>');
@@ -150,7 +150,7 @@ EOT
             throw new FilesystemException('Composer rollback failed: the "'.$rollbackDir.'" dir could not be written to');
         }
 
-        $old = $rollbackDir . '/' . $rollbackVersion . self::OLD_INSTALL_EXT;
+        $old = $rollbackDir.'/'.$rollbackVersion.self::OLD_INSTALL_EXT;
 
         if (!is_file($old)) {
             throw new FilesystemException('Composer rollback failed: "'.$old.'" could not be found');
@@ -159,7 +159,7 @@ EOT
             throw new FilesystemException('Composer rollback failed: "'.$old.'" could not be read');
         }
 
-        $oldFile = $rollbackDir . "/{$rollbackVersion}" . self::OLD_INSTALL_EXT;
+        $oldFile = $rollbackDir."/{$rollbackVersion}".self::OLD_INSTALL_EXT;
         $output->writeln(sprintf("Rolling back to version <info>%s</info>.", $rollbackVersion));
         if ($err = $this->setLocalPhar($localFilename, $oldFile)) {
             $output->writeln('<error>The backup file was corrupted ('.$err->getMessage().') and has been removed.</error>');
@@ -217,7 +217,7 @@ EOT
         $finder = Finder::create()
             ->depth(0)
             ->files()
-            ->name('*' . self::OLD_INSTALL_EXT)
+            ->name('*'.self::OLD_INSTALL_EXT)
             ->in($rollbackDir);
 
         return $finder;

@@ -94,10 +94,11 @@ EOT
     }
 
     /**
-     * finds a package by name
+     * finds a package by name.
      *
-     * @param  RepositoryInterface      $repos
-     * @param  string                   $name
+     * @param RepositoryInterface $repos
+     * @param string              $name
+     *
      * @return CompletePackageInterface
      */
     protected function getPackage(RepositoryInterface $repos, $name)
@@ -119,7 +120,7 @@ EOT
     }
 
     /**
-     * opens a url in your system default browser
+     * opens a url in your system default browser.
      *
      * @param string $url
      */
@@ -128,23 +129,23 @@ EOT
         $url = ProcessExecutor::escape($url);
 
         if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
-            return passthru('start "web" explorer "' . $url . '"');
+            return passthru('start "web" explorer "'.$url.'"');
         }
 
         passthru('which xdg-open', $linux);
         passthru('which open', $osx);
 
         if (0 === $linux) {
-            passthru('xdg-open ' . $url);
+            passthru('xdg-open '.$url);
         } elseif (0 === $osx) {
-            passthru('open ' . $url);
+            passthru('open '.$url);
         } else {
-            $this->getIO()->write('no suitable browser opening command found, open yourself: ' . $url);
+            $this->getIO()->write('no suitable browser opening command found, open yourself: '.$url);
         }
     }
 
     /**
-     * Initializes the repo
+     * Initializes the repo.
      *
      * @return CompositeRepository
      */

@@ -56,7 +56,7 @@ class Pool
     public function __construct($minimumStability = 'stable', array $stabilityFlags = array(), array $filterRequires = array())
     {
         $stabilities = BasePackage::$stabilities;
-        $this->versionParser = new VersionParser;
+        $this->versionParser = new VersionParser();
         $this->acceptableStabilities = array();
         foreach (BasePackage::$stabilities as $stability => $value) {
             if ($value <= BasePackage::$stabilities[$minimumStability]) {
@@ -74,7 +74,7 @@ class Pool
     }
 
     /**
-     * Adds a repository and its packages to this package pool
+     * Adds a repository and its packages to this package pool.
      *
      * @param RepositoryInterface $repo        A package repository
      * @param array               $rootAliases
@@ -146,25 +146,27 @@ class Pool
     }
 
     /**
-    * Retrieves the package object for a given package id.
-    *
-    * @param int $id
-    * @return PackageInterface
-    */
+     * Retrieves the package object for a given package id.
+     *
+     * @param int $id
+     *
+     * @return PackageInterface
+     */
     public function packageById($id)
     {
         return $this->packages[$id - 1];
     }
 
     /**
-     * Searches all packages providing the given package name and match the constraint
+     * Searches all packages providing the given package name and match the constraint.
      *
-     * @param  string                  $name          The package name to be searched for
-     * @param  LinkConstraintInterface $constraint    A constraint that all returned
-     *                                                packages must match or null to return all
-     * @param  bool                    $mustMatchName Whether the name of returned packages
-     *                                                must match the given name
-     * @return PackageInterface[]      A set of packages
+     * @param string                  $name          The package name to be searched for
+     * @param LinkConstraintInterface $constraint    A constraint that all returned
+     *                                               packages must match or null to return all
+     * @param bool                    $mustMatchName Whether the name of returned packages
+     *                                               must match the given name
+     *
+     * @return PackageInterface[] A set of packages
      */
     public function whatProvides($name, LinkConstraintInterface $constraint = null, $mustMatchName = false)
     {
@@ -268,7 +270,7 @@ class Pool
 
     public function literalToString($literal)
     {
-        return ($literal > 0 ? '+' : '-') . $this->literalToPackage($literal);
+        return ($literal > 0 ? '+' : '-').$this->literalToPackage($literal);
     }
 
     public function literalToPrettyString($literal, $installedMap)
@@ -303,12 +305,13 @@ class Pool
 
     /**
      * Checks if the package matches the given constraint directly or through
-     * provided or replaced packages
+     * provided or replaced packages.
      *
-     * @param  array|PackageInterface  $candidate
-     * @param  string                  $name       Name of the package to be matched
-     * @param  LinkConstraintInterface $constraint The constraint to verify
-     * @return int                     One of the MATCH* constants of this class or 0 if there is no match
+     * @param array|PackageInterface  $candidate
+     * @param string                  $name       Name of the package to be matched
+     * @param LinkConstraintInterface $constraint The constraint to verify
+     *
+     * @return int One of the MATCH* constants of this class or 0 if there is no match
      */
     private function match($candidate, $name, LinkConstraintInterface $constraint = null)
     {
@@ -320,7 +323,7 @@ class Pool
         if (!$isDev && !$isAlias && isset($this->filterRequires[$name])) {
             $requireFilter = $this->filterRequires[$name];
         } else {
-            $requireFilter = new EmptyConstraint;
+            $requireFilter = new EmptyConstraint();
         }
 
         if ($candidateName === $name) {

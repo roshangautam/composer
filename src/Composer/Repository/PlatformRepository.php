@@ -114,7 +114,7 @@ class PlatformRepository extends ArrayRepository
 
                 case 'openssl':
                     $prettyVersion = preg_replace_callback('{^(?:OpenSSL\s*)?([0-9.]+)([a-z]?).*}', function ($match) {
-                        return $match[1] . (empty($match[2]) ? '' : '.'.(ord($match[2]) - 96));
+                        return $match[1].(empty($match[2]) ? '' : '.'.(ord($match[2]) - 96));
                     }, OPENSSL_VERSION_TEXT);
                     break;
 
@@ -163,6 +163,6 @@ class PlatformRepository extends ArrayRepository
 
     private function buildPackageName($name)
     {
-        return 'ext-' . str_replace(' ', '-', $name);
+        return 'ext-'.str_replace(' ', '-', $name);
     }
 }

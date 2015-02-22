@@ -64,10 +64,10 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->versionParser = new VersionParser;
+        $this->versionParser = new VersionParser();
 
         // init repos
-        $platformRepo = new PlatformRepository;
+        $platformRepo = new PlatformRepository();
 
         $composer = $this->getComposer(false);
         if ($input->getOption('self')) {
@@ -84,7 +84,7 @@ EOT
             } else {
                 $defaultRepos = Factory::createDefaultRepositories($this->getIO());
                 $repos = new CompositeRepository($defaultRepos);
-                $output->writeln('No composer.json found in the current directory, showing available packages from ' . implode(', ', array_keys($defaultRepos)));
+                $output->writeln('No composer.json found in the current directory, showing available packages from '.implode(', ', array_keys($defaultRepos)));
             }
         } elseif ($composer) {
             $localRepo = $composer->getRepositoryManager()->getLocalRepository();
@@ -92,7 +92,7 @@ EOT
             $repos = new CompositeRepository(array_merge(array($installedRepo), $composer->getRepositoryManager()->getRepositories()));
         } else {
             $defaultRepos = Factory::createDefaultRepositories($this->getIO());
-            $output->writeln('No composer.json found in the current directory, showing available packages from ' . implode(', ', array_keys($defaultRepos)));
+            $output->writeln('No composer.json found in the current directory, showing available packages from '.implode(', ', array_keys($defaultRepos)));
             $installedRepo = $platformRepo;
             $repos = new CompositeRepository(array_merge(array($installedRepo), $defaultRepos));
         }
@@ -121,7 +121,7 @@ EOT
             if ($package->getSuggests()) {
                 $output->writeln("\n<info>suggests</info>");
                 foreach ($package->getSuggests() as $suggested => $reason) {
-                    $output->writeln($suggested . ' <comment>' . $reason . '</comment>');
+                    $output->writeln($suggested.' <comment>'.$reason.'</comment>');
                 }
             }
             $this->printLinks($input, $output, $package, 'provides');
@@ -200,27 +200,27 @@ EOT
                 $writeDescription = !$input->getOption('name-only') && !$input->getOption('path') && ($nameLength + ($showVersion ? $versionLength : 0) + 24 <= $width);
                 foreach ($packages[$type] as $package) {
                     if (is_object($package)) {
-                        $output->write($indent . str_pad($package->getPrettyName(), $nameLength, ' '), false);
+                        $output->write($indent.str_pad($package->getPrettyName(), $nameLength, ' '), false);
 
                         if ($writeVersion) {
-                            $output->write(' ' . str_pad($this->versionParser->formatVersion($package), $versionLength, ' '), false);
+                            $output->write(' '.str_pad($this->versionParser->formatVersion($package), $versionLength, ' '), false);
                         }
 
                         if ($writeDescription) {
                             $description = strtok($package->getDescription(), "\r\n");
                             $remaining = $width - $nameLength - $versionLength - 4;
                             if (strlen($description) > $remaining) {
-                                $description = substr($description, 0, $remaining - 3) . '...';
+                                $description = substr($description, 0, $remaining - 3).'...';
                             }
-                            $output->write(' ' . $description);
+                            $output->write(' '.$description);
                         }
 
                         if ($writePath) {
                             $path = strtok(realpath($composer->getInstallationManager()->getInstallPath($package)), "\r\n");
-                            $output->write(' ' . $path);
+                            $output->write(' '.$path);
                         }
                     } else {
-                        $output->write($indent . $package);
+                        $output->write($indent.$package);
                     }
                     $output->writeln('');
                 }
@@ -232,13 +232,15 @@ EOT
     }
 
     /**
-     * finds a package by name and version if provided
+     * finds a package by name and version if provided.
      *
-     * @param  RepositoryInterface       $installedRepo
-     * @param  RepositoryInterface       $repos
-     * @param  string                    $name
-     * @param  string                    $version
-     * @return array                     array(CompletePackageInterface, array of versions)
+     * @param RepositoryInterface $installedRepo
+     * @param RepositoryInterface $repos
+     * @param string              $name
+     * @param string              $version
+     *
+     * @return array array(CompletePackageInterface, array of versions)
+     *
      * @throws \InvalidArgumentException
      */
     protected function getPackage(RepositoryInterface $installedRepo, RepositoryInterface $repos, $name, $version = null)
@@ -281,23 +283,23 @@ EOT
     }
 
     /**
-     * prints package meta data
+     * prints package meta data.
      */
     protected function printMeta(InputInterface $input, OutputInterface $output, CompletePackageInterface $package, array $versions, RepositoryInterface $installedRepo, RepositoryInterface $repos)
     {
-        $output->writeln('<info>name</info>     : ' . $package->getPrettyName());
-        $output->writeln('<info>descrip.</info> : ' . $package->getDescription());
-        $output->writeln('<info>keywords</info> : ' . join(', ', $package->getKeywords() ?: array()));
+        $output->writeln('<info>name</info>     : '.$package->getPrettyName());
+        $output->writeln('<info>descrip.</info> : '.$package->getDescription());
+        $output->writeln('<info>keywords</info> : '.implode(', ', $package->getKeywords() ?: array()));
         $this->printVersions($input, $output, $package, $versions, $installedRepo, $repos);
-        $output->writeln('<info>type</info>     : ' . $package->getType());
-        $output->writeln('<info>license</info>  : ' . implode(', ', $package->getLicense()));
-        $output->writeln('<info>source</info>   : ' . sprintf('[%s] <comment>%s</comment> %s', $package->getSourceType(), $package->getSourceUrl(), $package->getSourceReference()));
-        $output->writeln('<info>dist</info>     : ' . sprintf('[%s] <comment>%s</comment> %s', $package->getDistType(), $package->getDistUrl(), $package->getDistReference()));
-        $output->writeln('<info>names</info>    : ' . implode(', ', $package->getNames()));
+        $output->writeln('<info>type</info>     : '.$package->getType());
+        $output->writeln('<info>license</info>  : '.implode(', ', $package->getLicense()));
+        $output->writeln('<info>source</info>   : '.sprintf('[%s] <comment>%s</comment> %s', $package->getSourceType(), $package->getSourceUrl(), $package->getSourceReference()));
+        $output->writeln('<info>dist</info>     : '.sprintf('[%s] <comment>%s</comment> %s', $package->getDistType(), $package->getDistUrl(), $package->getDistReference()));
+        $output->writeln('<info>names</info>    : '.implode(', ', $package->getNames()));
 
         if ($package->isAbandoned()) {
             $replacement = ($package->getReplacementPackage() !== null)
-                ? ' The author suggests using the ' . $package->getReplacementPackage(). ' package instead.'
+                ? ' The author suggests using the '.$package->getReplacementPackage().' package instead.'
                 : null;
 
             $output->writeln(
@@ -308,22 +310,22 @@ EOT
         if ($package->getSupport()) {
             $output->writeln("\n<info>support</info>");
             foreach ($package->getSupport() as $type => $value) {
-                $output->writeln('<comment>' . $type . '</comment> : '.$value);
+                $output->writeln('<comment>'.$type.'</comment> : '.$value);
             }
         }
 
         if ($package->getAutoload()) {
             $output->writeln("\n<info>autoload</info>");
             foreach ($package->getAutoload() as $type => $autoloads) {
-                $output->writeln('<comment>' . $type . '</comment>');
+                $output->writeln('<comment>'.$type.'</comment>');
 
                 if ($type === 'psr-0') {
                     foreach ($autoloads as $name => $path) {
-                        $output->writeln(($name ?: '*') . ' => ' . (is_array($path) ? implode(', ', $path) : ($path ?: '.')));
+                        $output->writeln(($name ?: '*').' => '.(is_array($path) ? implode(', ', $path) : ($path ?: '.')));
                     }
                 } elseif ($type === 'psr-4') {
                     foreach ($autoloads as $name => $path) {
-                        $output->writeln(($name ?: '*') . ' => ' . (is_array($path) ? implode(', ', $path) : ($path ?: '.')));
+                        $output->writeln(($name ?: '*').' => '.(is_array($path) ? implode(', ', $path) : ($path ?: '.')));
                     }
                 } elseif ($type === 'classmap') {
                     $output->writeln(implode(', ', $autoloads));
@@ -337,7 +339,7 @@ EOT
     }
 
     /**
-     * prints all available versions of this package and highlights the installed one if any
+     * prints all available versions of this package and highlights the installed one if any.
      */
     protected function printVersions(InputInterface $input, OutputInterface $output, CompletePackageInterface $package, array $versions, RepositoryInterface $installedRepo, RepositoryInterface $repos)
     {
@@ -349,17 +351,17 @@ EOT
             $installedVersion = $package->getPrettyVersion();
             $key = array_search($installedVersion, $versions);
             if (false !== $key) {
-                $versions[$key] = '<info>* ' . $installedVersion . '</info>';
+                $versions[$key] = '<info>* '.$installedVersion.'</info>';
             }
         }
 
         $versions = implode(', ', $versions);
 
-        $output->writeln('<info>versions</info> : ' . $versions);
+        $output->writeln('<info>versions</info> : '.$versions);
     }
 
     /**
-     * print link objects
+     * print link objects.
      *
      * @param InputInterface           $input
      * @param OutputInterface          $output
@@ -371,10 +373,10 @@ EOT
     {
         $title = $title ?: $linkType;
         if ($links = $package->{'get'.ucfirst($linkType)}()) {
-            $output->writeln("\n<info>" . $title . "</info>");
+            $output->writeln("\n<info>".$title."</info>");
 
             foreach ($links as $link) {
-                $output->writeln($link->getTarget() . ' <comment>' . $link->getPrettyConstraint() . '</comment>');
+                $output->writeln($link->getTarget().' <comment>'.$link->getPrettyConstraint().'</comment>');
             }
         }
     }

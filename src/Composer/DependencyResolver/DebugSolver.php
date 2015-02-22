@@ -25,11 +25,11 @@ class DebugSolver extends Solver
                 continue;
             }
             if ($level > 0) {
-                echo '    +' . $this->pool->packageById($packageId)."\n";
+                echo '    +'.$this->pool->packageById($packageId)."\n";
             } elseif ($level < 0) {
-                echo '    -' . $this->pool->packageById($packageId)."\n";
+                echo '    -'.$this->pool->packageById($packageId)."\n";
             } else {
-                echo '    ?' . $this->pool->packageById($packageId)."\n";
+                echo '    ?'.$this->pool->packageById($packageId)."\n";
             }
         }
         echo "\n";
@@ -39,7 +39,7 @@ class DebugSolver extends Solver
     {
         echo "DecisionQueue: \n";
         foreach ($this->decisionQueue as $i => $literal) {
-            echo '    ' . $this->pool->literalToString($literal) . ' ' . $this->decisionQueueWhy[$i]." level ".$this->decisionMap[abs($literal)]."\n";
+            echo '    '.$this->pool->literalToString($literal).' '.$this->decisionQueueWhy[$i]." level ".$this->decisionMap[abs($literal)]."\n";
         }
         echo "\n";
     }

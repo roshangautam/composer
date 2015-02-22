@@ -61,12 +61,13 @@ class EventDispatcher
     }
 
     /**
-     * Dispatch an event
+     * Dispatch an event.
      *
-     * @param  string $eventName An event name
-     * @param  Event  $event
-     * @return int    return code of the executed script if any, for php scripts a false return
-     *                          value is changed to 1, anything else to 0
+     * @param string $eventName An event name
+     * @param Event  $event
+     *
+     * @return int return code of the executed script if any, for php scripts a false return
+     *             value is changed to 1, anything else to 0
      */
     public function dispatch($eventName, Event $event = null)
     {
@@ -80,12 +81,13 @@ class EventDispatcher
     /**
      * Dispatch a script event.
      *
-     * @param  string $eventName      The constant in ScriptEvents
-     * @param  bool   $devMode
-     * @param  array  $additionalArgs Arguments passed by the user
-     * @param  array  $flags          Optional flags to pass data not as argument
-     * @return int    return code of the executed script if any, for php scripts a false return
-     *                               value is changed to 1, anything else to 0
+     * @param string $eventName      The constant in ScriptEvents
+     * @param bool   $devMode
+     * @param array  $additionalArgs Arguments passed by the user
+     * @param array  $flags          Optional flags to pass data not as argument
+     *
+     * @return int return code of the executed script if any, for php scripts a false return
+     *             value is changed to 1, anything else to 0
      */
     public function dispatchScript($eventName, $devMode = false, $additionalArgs = array(), $flags = array())
     {
@@ -95,11 +97,12 @@ class EventDispatcher
     /**
      * Dispatch a package event.
      *
-     * @param  string             $eventName The constant in ScriptEvents
-     * @param  boolean            $devMode   Whether or not we are in dev mode
-     * @param  OperationInterface $operation The package being installed/updated/removed
-     * @return int                return code of the executed script if any, for php scripts a false return
-     *                                      value is changed to 1, anything else to 0
+     * @param string             $eventName The constant in ScriptEvents
+     * @param boolean            $devMode   Whether or not we are in dev mode
+     * @param OperationInterface $operation The package being installed/updated/removed
+     *
+     * @return int return code of the executed script if any, for php scripts a false return
+     *             value is changed to 1, anything else to 0
      */
     public function dispatchPackageEvent($eventName, $devMode, OperationInterface $operation)
     {
@@ -109,12 +112,13 @@ class EventDispatcher
     /**
      * Dispatch a command event.
      *
-     * @param  string  $eventName      The constant in ScriptEvents
-     * @param  boolean $devMode        Whether or not we are in dev mode
-     * @param  array   $additionalArgs Arguments passed by the user
-     * @param  array   $flags          Optional flags to pass data not as argument
-     * @return int     return code of the executed script if any, for php scripts a false return
-     *                                value is changed to 1, anything else to 0
+     * @param string  $eventName      The constant in ScriptEvents
+     * @param boolean $devMode        Whether or not we are in dev mode
+     * @param array   $additionalArgs Arguments passed by the user
+     * @param array   $flags          Optional flags to pass data not as argument
+     *
+     * @return int return code of the executed script if any, for php scripts a false return
+     *             value is changed to 1, anything else to 0
      */
     public function dispatchCommandEvent($eventName, $devMode, $additionalArgs = array(), $flags = array())
     {
@@ -142,10 +146,12 @@ class EventDispatcher
     /**
      * Triggers the listeners of an event.
      *
-     * @param  Event             $event          The event object to pass to the event handlers/listeners.
-     * @param  string            $additionalArgs
-     * @return int               return code of the executed script if any, for php scripts a false return
-     *                                          value is changed to 1, anything else to 0
+     * @param Event  $event          The event object to pass to the event handlers/listeners.
+     * @param string $additionalArgs
+     *
+     * @return int return code of the executed script if any, for php scripts a false return
+     *             value is changed to 1, anything else to 0
+     *
      * @throws \RuntimeException
      * @throws \Exception
      */
@@ -179,8 +185,8 @@ class EventDispatcher
                     throw $e;
                 }
             } else {
-                $args = implode(' ', array_map(array('Composer\Util\ProcessExecutor','escape'), $event->getArguments()));
-                if (0 !== ($exitCode = $this->process->execute($callable . ($args === '' ? '' : ' '.$args)))) {
+                $args = implode(' ', array_map(array('Composer\Util\ProcessExecutor', 'escape'), $event->getArguments()));
+                if (0 !== ($exitCode = $this->process->execute($callable.($args === '' ? '' : ' '.$args)))) {
                     $this->io->write(sprintf('<error>Script %s handling the %s event returned with an error</error>', $callable, $event->getName()));
 
                     throw new \RuntimeException('Error Output: '.$this->process->getErrorOutput(), $exitCode);
@@ -210,6 +216,7 @@ class EventDispatcher
     /**
      * @param mixed $target
      * @param Event $event
+     *
      * @return Event|CommandEvent
      */
     protected function checkListenerExpectedEvent($target, Event $event)
@@ -240,7 +247,7 @@ class EventDispatcher
     }
 
     /**
-     * Add a listener for a particular event
+     * Add a listener for a particular event.
      *
      * @param string   $eventName The event name - typically a constant
      * @param Callable $listener  A callable expecting an event argument
@@ -252,7 +259,7 @@ class EventDispatcher
     }
 
     /**
-     * Adds object methods as listeners for the events in getSubscribedEvents
+     * Adds object methods as listeners for the events in getSubscribedEvents.
      *
      * @see EventSubscriberInterface
      *
@@ -274,9 +281,10 @@ class EventDispatcher
     }
 
     /**
-     * Retrieves all listeners for a given event
+     * Retrieves all listeners for a given event.
      *
-     * @param  Event $event
+     * @param Event $event
+     *
      * @return array All listeners: callables and scripts
      */
     protected function getListeners(Event $event)
@@ -295,9 +303,10 @@ class EventDispatcher
     }
 
     /**
-     * Checks if an event has listeners registered
+     * Checks if an event has listeners registered.
      *
-     * @param  Event   $event
+     * @param Event $event
+     *
      * @return boolean
      */
     public function hasEventListeners(Event $event)
@@ -308,9 +317,10 @@ class EventDispatcher
     }
 
     /**
-     * Finds all listeners defined as scripts in the package
+     * Finds all listeners defined as scripts in the package.
      *
-     * @param  Event $event Event object
+     * @param Event $event Event object
+     *
      * @return array Listeners
      */
     protected function getScriptListeners(Event $event)
@@ -337,9 +347,10 @@ class EventDispatcher
     }
 
     /**
-     * Checks if string given references a class path and method
+     * Checks if string given references a class path and method.
      *
-     * @param  string  $callable
+     * @param string $callable
+     *
      * @return boolean
      */
     protected function isPhpScript($callable)

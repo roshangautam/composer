@@ -42,13 +42,13 @@ class RarDownloader extends ArchiveDownloader
 
         // Try to use unrar on *nix
         if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
-            $command = 'unrar x ' . ProcessExecutor::escape($file) . ' ' . ProcessExecutor::escape($path) . ' && chmod -R u+w ' . ProcessExecutor::escape($path);
+            $command = 'unrar x '.ProcessExecutor::escape($file).' '.ProcessExecutor::escape($path).' && chmod -R u+w '.ProcessExecutor::escape($path);
 
             if (0 === $this->process->execute($command, $ignoredOutput)) {
                 return;
             }
 
-            $processError = 'Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput();
+            $processError = 'Failed to execute '.$command."\n\n".$this->process->getErrorOutput();
         }
 
         if (!class_exists('RarArchive')) {
@@ -56,16 +56,16 @@ class RarDownloader extends ArchiveDownloader
             $iniPath = php_ini_loaded_file();
 
             if ($iniPath) {
-                $iniMessage = 'The php.ini used by your command-line PHP is: ' . $iniPath;
+                $iniMessage = 'The php.ini used by your command-line PHP is: '.$iniPath;
             } else {
                 $iniMessage = 'A php.ini file does not exist. You will have to create one.';
             }
 
             $error = "Could not decompress the archive, enable the PHP rar extension or install unrar.\n"
-                . $iniMessage . "\n" . $processError;
+                .$iniMessage."\n".$processError;
 
             if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
-                $error = "Could not decompress the archive, enable the PHP rar extension.\n" . $iniMessage;
+                $error = "Could not decompress the archive, enable the PHP rar extension.\n".$iniMessage;
             }
 
             throw new \RuntimeException($error);
@@ -74,7 +74,7 @@ class RarDownloader extends ArchiveDownloader
         $rarArchive = RarArchive::open($file);
 
         if (false === $rarArchive) {
-            throw new \UnexpectedValueException('Could not open RAR archive: ' . $file);
+            throw new \UnexpectedValueException('Could not open RAR archive: '.$file);
         }
 
         $entries = $rarArchive->getEntries();

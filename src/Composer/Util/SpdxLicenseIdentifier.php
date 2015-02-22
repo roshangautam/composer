@@ -36,6 +36,7 @@ class SpdxLicenseIdentifier
      * @param array|string $license
      *
      * @return bool
+     *
      * @throws \InvalidArgumentException
      */
     public function validate($license)
@@ -57,11 +58,11 @@ class SpdxLicenseIdentifier
     }
 
     /**
-     * Loads SPDX identifiers
+     * Loads SPDX identifiers.
      */
     private function initIdentifiers()
     {
-        $jsonFile = new JsonFile(__DIR__ . '/../../../res/spdx-identifier.json');
+        $jsonFile = new JsonFile(__DIR__.'/../../../res/spdx-identifier.json');
         $this->identifiers = $jsonFile->read();
     }
 
@@ -79,6 +80,7 @@ class SpdxLicenseIdentifier
      * @param string $license
      *
      * @return bool
+     *
      * @throws \RuntimeException
      */
     private function isValidLicenseString($license)
@@ -98,11 +100,11 @@ class SpdxLicenseIdentifier
             static $offset = 0;
 
             if ($offset >= strlen($license)) {
-                return null;
+                return;
             }
 
             foreach ($tokens as $name => $token) {
-                if (false === $r = preg_match('{' . $token . '}', $license, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+                if (false === $r = preg_match('{'.$token.'}', $license, $matches, PREG_OFFSET_CAPTURE, $offset)) {
                     throw new \RuntimeException('Pattern for token %s failed (regex error).', $name);
                 }
                 if ($r === 0) {

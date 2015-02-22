@@ -35,7 +35,7 @@ class GitHubDriver extends VcsDriver
     protected $isPrivate = false;
 
     /**
-     * Git Driver
+     * Git Driver.
      *
      * @var GitDriver
      */
@@ -87,7 +87,7 @@ class GitHubDriver extends VcsDriver
             return $this->gitDriver->getUrl();
         }
 
-        return 'https://' . $this->originUrl . '/'.$this->owner.'/'.$this->repository.'.git';
+        return 'https://'.$this->originUrl.'/'.$this->owner.'/'.$this->repository.'.git';
     }
 
     /**
@@ -98,10 +98,10 @@ class GitHubDriver extends VcsDriver
         if ('github.com' === $this->originUrl) {
             $apiUrl = 'api.github.com';
         } else {
-            $apiUrl = $this->originUrl . '/api/v3';
+            $apiUrl = $this->originUrl.'/api/v3';
         }
 
-        return 'https://' . $apiUrl;
+        return 'https://'.$apiUrl;
     }
 
     /**
@@ -128,7 +128,7 @@ class GitHubDriver extends VcsDriver
      */
     public function getDist($identifier)
     {
-        $url = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/zipball/'.$identifier;
+        $url = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/zipball/'.$identifier;
 
         return array('type' => 'zip', 'url' => $url, 'reference' => $identifier, 'shasum' => '');
     }
@@ -150,7 +150,7 @@ class GitHubDriver extends VcsDriver
             $notFoundRetries = 2;
             while ($notFoundRetries) {
                 try {
-                    $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/contents/composer.json?ref='.urlencode($identifier);
+                    $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/contents/composer.json?ref='.urlencode($identifier);
                     $composer = JsonFile::parseJson($this->getContents($resource));
                     if (empty($composer['content']) || $composer['encoding'] !== 'base64' || !($composer = base64_decode($composer['content']))) {
                         throw new \RuntimeException('Could not retrieve composer.json from '.$resource);
@@ -172,7 +172,7 @@ class GitHubDriver extends VcsDriver
                 $composer = JsonFile::parseJson($composer, $resource);
 
                 if (empty($composer['time'])) {
-                    $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
+                    $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/commits/'.urlencode($identifier);
                     $commit = JsonFile::parseJson($this->getContents($resource), $resource);
                     $composer['time'] = $commit['commit']['committer']['date'];
                 }
@@ -205,7 +205,7 @@ class GitHubDriver extends VcsDriver
         }
         if (null === $this->tags) {
             $this->tags = array();
-            $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/tags?per_page=100';
+            $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/tags?per_page=100';
 
             do {
                 $tagsData = JsonFile::parseJson($this->getContents($resource), $resource);
@@ -230,7 +230,7 @@ class GitHubDriver extends VcsDriver
         }
         if (null === $this->branches) {
             $this->branches = array();
-            $resource = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
+            $resource = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository.'/git/refs/heads?per_page=100';
 
             $branchBlacklist = array('gh-pages');
 
@@ -276,13 +276,13 @@ class GitHubDriver extends VcsDriver
     }
 
     /**
-     * Generate an SSH URL
+     * Generate an SSH URL.
      *
      * @return string
      */
     protected function generateSshUrl()
     {
-        return 'git@' . $this->originUrl . ':'.$this->owner.'/'.$this->repository.'.git';
+        return 'git@'.$this->originUrl.':'.$this->owner.'/'.$this->repository.'.git';
     }
 
     /**
@@ -393,13 +393,13 @@ class GitHubDriver extends VcsDriver
     }
 
     /**
-     * Fetch root identifier from GitHub
+     * Fetch root identifier from GitHub.
      *
      * @throws TransportException
      */
     protected function fetchRootIdentifier()
     {
-        $repoDataUrl = $this->getApiUrl() . '/repos/'.$this->owner.'/'.$this->repository;
+        $repoDataUrl = $this->getApiUrl().'/repos/'.$this->owner.'/'.$this->repository;
 
         $repoData = JsonFile::parseJson($this->getContents($repoDataUrl, true), $repoDataUrl);
         if (null === $repoData && null !== $this->gitDriver) {

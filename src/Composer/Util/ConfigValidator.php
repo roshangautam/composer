@@ -119,7 +119,7 @@ class ConfigValidator
 
             if (!empty($requireOverrides)) {
                 $plural = (count($requireOverrides) > 1) ? 'are' : 'is';
-                $warnings[] = implode(', ', array_keys($requireOverrides)). " {$plural} required both in require and require-dev, this can lead to unexpected behavior";
+                $warnings[] = implode(', ', array_keys($requireOverrides))." {$plural} required both in require and require-dev, this can lead to unexpected behavior";
             }
         }
 

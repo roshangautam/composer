@@ -54,10 +54,10 @@ class PearInstaller extends LibraryInstaller
         parent::initializeBinDir();
 
         $isWindows = defined('PHP_WINDOWS_VERSION_BUILD');
-        $php_bin = $this->binDir . ($isWindows ? '/composer-php.bat' : '/composer-php');
+        $php_bin = $this->binDir.($isWindows ? '/composer-php.bat' : '/composer-php');
 
         if (!$isWindows) {
-            $php_bin = '/usr/bin/env ' . $php_bin;
+            $php_bin = '/usr/bin/env '.$php_bin;
         }
 
         $installPath = $this->getInstallPath($package);
@@ -66,8 +66,8 @@ class PearInstaller extends LibraryInstaller
             'php_bin' => $php_bin,
             'pear_php' => $installPath,
             'php_dir' => $installPath,
-            'bin_dir' => $installPath . '/bin',
-            'data_dir' => $installPath . '/data',
+            'bin_dir' => $installPath.'/bin',
+            'data_dir' => $installPath.'/data',
             'version' => $package->getPrettyVersion(),
         );
 
@@ -83,7 +83,7 @@ class PearInstaller extends LibraryInstaller
 
     protected function getBinaries(PackageInterface $package)
     {
-        $binariesPath = $this->getInstallPath($package) . '/bin/';
+        $binariesPath = $this->getInstallPath($package).'/bin/';
         $binaries = array();
         if (file_exists($binariesPath)) {
             foreach (new \FilesystemIterator($binariesPath, \FilesystemIterator::KEY_AS_FILENAME | \FilesystemIterator::CURRENT_AS_FILEINFO) as $fileName => $value) {
@@ -146,16 +146,16 @@ class PearInstaller extends LibraryInstaller
         $binToVendor = $this->filesystem->findShortestPath($this->binDir, $this->vendorDir, true);
 
         return
-            "@echo off\r\n" .
-            "setlocal enabledelayedexpansion\r\n" .
-            "set BIN_DIR=%~dp0\r\n" .
-            "set VENDOR_DIR=%BIN_DIR%\\".$binToVendor."\r\n" .
-            "set DIRS=.\r\n" .
-            "FOR /D %%V IN (%VENDOR_DIR%\\*) DO (\r\n" .
-            "    FOR /D %%P IN (%%V\\*) DO (\r\n" .
-            "        set DIRS=!DIRS!;%%~fP\r\n" .
-            "    )\r\n" .
-            ")\r\n" .
+            "@echo off\r\n".
+            "setlocal enabledelayedexpansion\r\n".
+            "set BIN_DIR=%~dp0\r\n".
+            "set VENDOR_DIR=%BIN_DIR%\\".$binToVendor."\r\n".
+            "set DIRS=.\r\n".
+            "FOR /D %%V IN (%VENDOR_DIR%\\*) DO (\r\n".
+            "    FOR /D %%P IN (%%V\\*) DO (\r\n".
+            "        set DIRS=!DIRS!;%%~fP\r\n".
+            "    )\r\n".
+            ")\r\n".
             "php.exe -d include_path=!DIRS! %*\r\n";
     }
 

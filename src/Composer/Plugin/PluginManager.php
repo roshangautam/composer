@@ -25,7 +25,7 @@ use Composer\Package\LinkConstraint\VersionConstraint;
 use Composer\DependencyResolver\Pool;
 
 /**
- * Plugin manager
+ * Plugin manager.
  *
  * @author Nils Adermann <naderman@naderman.de>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -43,11 +43,11 @@ class PluginManager
     private static $classCounter = 0;
 
     /**
-     * Initializes plugin manager
+     * Initializes plugin manager.
      *
-     * @param IOInterface         $io
-     * @param Composer            $composer
-     * @param Composer            $globalComposer
+     * @param IOInterface $io
+     * @param Composer    $composer
+     * @param Composer    $globalComposer
      */
     public function __construct(IOInterface $io, Composer $composer, Composer $globalComposer = null)
     {
@@ -58,7 +58,7 @@ class PluginManager
     }
 
     /**
-     * Loads all plugins from currently installed plugin packages
+     * Loads all plugins from currently installed plugin packages.
      */
     public function loadInstalledPlugins()
     {
@@ -73,7 +73,7 @@ class PluginManager
     }
 
     /**
-     * Adds a plugin, activates it and registers it with the event dispatcher
+     * Adds a plugin, activates it and registers it with the event dispatcher.
      *
      * @param PluginInterface $plugin plugin instance
      */
@@ -88,7 +88,7 @@ class PluginManager
     }
 
     /**
-     * Gets all currently active plugin instances
+     * Gets all currently active plugin instances.
      *
      * @return array plugins
      */
@@ -98,7 +98,7 @@ class PluginManager
     }
 
     /**
-     * Load all plugins and installers from a repository
+     * Load all plugins and installers from a repository.
      *
      * Note that plugins in the specified repository that rely on events that
      * have fired prior to loading will be missed. This means you likely want to
@@ -140,7 +140,7 @@ class PluginManager
     }
 
     /**
-     * Recursively generates a map of package names to packages for all deps
+     * Recursively generates a map of package names to packages for all deps.
      *
      * @param Pool             $pool      Package pool of installed packages
      * @param array            $collected Current state of the map for recursion
@@ -167,7 +167,7 @@ class PluginManager
     }
 
     /**
-     * Resolves a package link to a package in the installed pool
+     * Resolves a package link to a package in the installed pool.
      *
      * Since dependencies are already installed this should always find one.
      *

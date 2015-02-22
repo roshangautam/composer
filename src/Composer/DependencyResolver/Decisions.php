@@ -13,7 +13,7 @@
 namespace Composer\DependencyResolver;
 
 /**
- * Stores decisions on installing, removing or keeping packages
+ * Stores decisions on installing, removing or keeping packages.
  *
  * @author Nils Adermann <naderman@naderman.de>
  */
@@ -98,7 +98,7 @@ class Decisions implements \Iterator, \Countable
             }
         }
 
-        return null;
+        return;
     }
 
     public function atOffset($queueOffset)

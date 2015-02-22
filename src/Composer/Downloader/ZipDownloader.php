@@ -38,15 +38,15 @@ class ZipDownloader extends ArchiveDownloader
 
         // try to use unzip on *nix
         if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
-            $command = 'unzip '.ProcessExecutor::escape($file).' -d '.ProcessExecutor::escape($path) . ' && chmod -R u+w ' . ProcessExecutor::escape($path);
+            $command = 'unzip '.ProcessExecutor::escape($file).' -d '.ProcessExecutor::escape($path).' && chmod -R u+w '.ProcessExecutor::escape($path);
             try {
                 if (0 === $this->process->execute($command, $ignoredOutput)) {
                     return;
                 }
 
-                $processError = 'Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput();
+                $processError = 'Failed to execute '.$command."\n\n".$this->process->getErrorOutput();
             } catch (\Exception $e) {
-                $processError = 'Failed to execute ' . $command . "\n\n" . $e->getMessage();
+                $processError = 'Failed to execute '.$command."\n\n".$e->getMessage();
             }
         }
 
@@ -55,16 +55,16 @@ class ZipDownloader extends ArchiveDownloader
             $iniPath = php_ini_loaded_file();
 
             if ($iniPath) {
-                $iniMessage = 'The php.ini used by your command-line PHP is: ' . $iniPath;
+                $iniMessage = 'The php.ini used by your command-line PHP is: '.$iniPath;
             } else {
                 $iniMessage = 'A php.ini file does not exist. You will have to create one.';
             }
 
             $error = "Could not decompress the archive, enable the PHP zip extension or install unzip.\n"
-                . $iniMessage . "\n" . $processError;
+                .$iniMessage."\n".$processError;
 
             if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
-                $error = "Could not decompress the archive, enable the PHP zip extension.\n" . $iniMessage;
+                $error = "Could not decompress the archive, enable the PHP zip extension.\n".$iniMessage;
             }
 
             throw new \RuntimeException($error);
@@ -86,8 +86,9 @@ class ZipDownloader extends ArchiveDownloader
     /**
      * Give a meaningful error message to the user.
      *
-     * @param  int    $retval
-     * @param  string $file
+     * @param int    $retval
+     * @param string $file
+     *
      * @return string
      */
     protected function getErrorMessage($retval, $file)

@@ -16,7 +16,7 @@ use Composer\Package\PackageInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Base downloader for archives
+ * Base downloader for archives.
  *
  * @author Kirill chEbba Chebunin <iam@chebba.org>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -60,7 +60,7 @@ abstract class ArchiveDownloader extends FileDownloader
                 // move files back out of the temp dir
                 foreach ($contentDir as $file) {
                     $file = (string) $file;
-                    $this->filesystem->rename($file, $path . '/' . basename($file));
+                    $this->filesystem->rename($file, $path.'/'.basename($file));
                 }
 
                 $this->filesystem->removeDirectory($temporaryDir);
@@ -107,13 +107,13 @@ abstract class ArchiveDownloader extends FileDownloader
         if ($package->getDistReference() && strpos($url, 'github.com')) {
             if (preg_match('{^https?://(?:www\.)?github\.com/([^/]+)/([^/]+)/(zip|tar)ball/(.+)$}i', $url, $match)) {
                 // update legacy github archives to API calls with the proper reference
-                $url = 'https://api.github.com/repos/' . $match[1] . '/'. $match[2] . '/' . $match[3] . 'ball/' . $package->getDistReference();
+                $url = 'https://api.github.com/repos/'.$match[1].'/'.$match[2].'/'.$match[3].'ball/'.$package->getDistReference();
             } elseif ($package->getDistReference() && preg_match('{^https?://(?:www\.)?github\.com/([^/]+)/([^/]+)/archive/.+\.(zip|tar)(?:\.gz)?$}i', $url, $match)) {
                 // update current github web archives to API calls with the proper reference
-                $url = 'https://api.github.com/repos/' . $match[1] . '/'. $match[2] . '/' . $match[3] . 'ball/' . $package->getDistReference();
+                $url = 'https://api.github.com/repos/'.$match[1].'/'.$match[2].'/'.$match[3].'ball/'.$package->getDistReference();
             } elseif ($package->getDistReference() && preg_match('{^https?://api\.github\.com/repos/([^/]+)/([^/]+)/(zip|tar)ball(?:/.+)?$}i', $url, $match)) {
                 // update api archives to the proper reference
-                $url = 'https://api.github.com/repos/' . $match[1] . '/'. $match[2] . '/' . $match[3] . 'ball/' . $package->getDistReference();
+                $url = 'https://api.github.com/repos/'.$match[1].'/'.$match[2].'/'.$match[3].'ball/'.$package->getDistReference();
             }
         }
 
@@ -125,7 +125,7 @@ abstract class ArchiveDownloader extends FileDownloader
     }
 
     /**
-     * Extract file to directory
+     * Extract file to directory.
      *
      * @param string $file Extracted file
      * @param string $path Directory
@@ -135,9 +135,10 @@ abstract class ArchiveDownloader extends FileDownloader
     abstract protected function extract($file, $path);
 
     /**
-     * Returns the folder content, excluding dotfiles
+     * Returns the folder content, excluding dotfiles.
      *
-     * @param  string         $dir Directory
+     * @param string $dir Directory
+     *
      * @return \SplFileInfo[]
      */
     private function getFolderContent($dir)

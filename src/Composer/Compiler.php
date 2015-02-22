@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 /**
- * The Compiler class compiles composer into a phar
+ * The Compiler class compiles composer into a phar.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -29,10 +29,11 @@ class Compiler
     private $versionDate;
 
     /**
-     * Compiles composer into a single phar file
+     * Compiles composer into a single phar file.
      *
      * @throws \RuntimeException
-     * @param  string            $pharFile The full path to the file to create
+     *
+     * @param string $pharFile The full path to the file to create
      */
     public function compile($pharFile = 'composer.phar')
     {
@@ -85,18 +86,18 @@ class Compiler
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
         }
-        $this->addFile($phar, new \SplFileInfo(__DIR__ . '/Autoload/ClassLoader.php'), false);
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/Autoload/ClassLoader.php'), false);
 
         $finder = new Finder();
         $finder->files()
             ->name('*.json')
-            ->in(__DIR__ . '/../../res')
+            ->in(__DIR__.'/../../res')
         ;
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file, false);
         }
-        $this->addFile($phar, new \SplFileInfo(__DIR__ . '/../../src/Composer/IO/hiddeninput.exe'), false);
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../src/Composer/IO/hiddeninput.exe'), false);
 
         $finder = new Finder();
         $finder->files()
@@ -166,7 +167,8 @@ class Compiler
     /**
      * Removes whitespace from a PHP source string while preserving line numbers.
      *
-     * @param  string $source A PHP string
+     * @param string $source A PHP string
+     *
      * @return string The PHP string with the whitespace removed
      */
     private function stripWhitespace($source)
@@ -232,7 +234,7 @@ EOF;
             $stub .= "define('COMPOSER_DEV_WARNING_TIME', $warningTime);\n";
         }
 
-        return $stub . <<<'EOF'
+        return $stub.<<<'EOF'
 require 'phar://composer.phar/bin/composer';
 
 __HALT_COMPILER();

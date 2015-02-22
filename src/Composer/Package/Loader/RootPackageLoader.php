@@ -25,7 +25,7 @@ use Composer\Util\Git as GitUtil;
 use Composer\Util\Svn as SvnUtil;
 
 /**
- * ArrayLoader built for the sole purpose of loading the root package
+ * ArrayLoader built for the sole purpose of loading the root package.
  *
  * Sets additional defaults and loads repositories
  *
@@ -279,13 +279,13 @@ class RootPackageLoader extends ArrayLoader
             $length = PHP_INT_MAX;
 
             $nonFeatureBranches = '';
-            if(!empty($config['non-feature-branches'])) {
+            if (!empty($config['non-feature-branches'])) {
                 $nonFeatureBranches = implode('|', $config['non-feature-branches']);
             }
 
             foreach ($branches as $candidate) {
                 // return directly, if branch is configured to be non-feature branch
-                if($candidate === $branch && preg_match('{^(' . $nonFeatureBranches . ')$}', $candidate)) {
+                if ($candidate === $branch && preg_match('{^('.$nonFeatureBranches.')$}', $candidate)) {
                     return $version;
                 }
 
@@ -322,7 +322,7 @@ class RootPackageLoader extends ArrayLoader
             $branchesPath = isset($config['branches-path']) ? preg_quote($config['branches-path'], '#') : 'branches';
             $tagsPath = isset($config['tags-path']) ? preg_quote($config['tags-path'], '#') : 'tags';
 
-            $urlPattern = '#<url>.*/('.$trunkPath.'|('.$branchesPath.'|'. $tagsPath .')/(.*))</url>#';
+            $urlPattern = '#<url>.*/('.$trunkPath.'|('.$branchesPath.'|'.$tagsPath.')/(.*))</url>#';
 
             if (preg_match($urlPattern, $output, $matches)) {
                 if (isset($matches[2]) && ($branchesPath === $matches[2] || $tagsPath === $matches[2])) {

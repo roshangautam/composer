@@ -115,7 +115,7 @@ class VcsRepository extends ArrayRepository
             throw new \InvalidArgumentException('No driver found to handle VCS repository '.$this->url);
         }
 
-        $this->versionParser = new VersionParser;
+        $this->versionParser = new VersionParser();
         if (!$this->loader) {
             $this->loader = new ArrayLoader($this->versionParser);
         }
@@ -132,7 +132,7 @@ class VcsRepository extends ArrayRepository
         }
 
         foreach ($driver->getTags() as $tag => $identifier) {
-            $msg = 'Reading composer.json of <info>' . ($this->packageName ?: $this->url) . '</info> (<comment>' . $tag . '</comment>)';
+            $msg = 'Reading composer.json of <info>'.($this->packageName ?: $this->url).'</info> (<comment>'.$tag.'</comment>)';
             if ($verbose) {
                 $this->io->write($msg);
             } else {
@@ -196,7 +196,7 @@ class VcsRepository extends ArrayRepository
         }
 
         foreach ($driver->getBranches() as $branch => $identifier) {
-            $msg = 'Reading composer.json of <info>' . ($this->packageName ?: $this->url) . '</info> (<comment>' . $branch . '</comment>)';
+            $msg = 'Reading composer.json of <info>'.($this->packageName ?: $this->url).'</info> (<comment>'.$branch.'</comment>)';
             if ($verbose) {
                 $this->io->write($msg);
             } else {
@@ -224,7 +224,7 @@ class VcsRepository extends ArrayRepository
 
                 // make sure branch packages have a dev flag
                 if ('dev-' === substr($parsedBranch, 0, 4) || '9999999-dev' === $parsedBranch) {
-                    $data['version'] = 'dev-' . $data['version'];
+                    $data['version'] = 'dev-'.$data['version'];
                 } else {
                     $data['version'] = preg_replace('{(\.9{7})+}', '.x', $parsedBranch);
                 }

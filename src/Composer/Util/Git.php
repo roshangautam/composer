@@ -61,22 +61,22 @@ class Git
             $messages = array();
             foreach ($protocols as $protocol) {
                 if ('ssh' === $protocol) {
-                    $url = "git@" . $match[1] . ":" . $match[2];
+                    $url = "git@".$match[1].":".$match[2];
                 } else {
-                    $url = $protocol ."://" . $match[1] . "/" . $match[2];
+                    $url = $protocol."://".$match[1]."/".$match[2];
                 }
 
                 if (0 === $this->process->execute(call_user_func($commandCallable, $url), $ignoredOutput, $cwd)) {
                     return;
                 }
-                $messages[] = '- ' . $url . "\n" . preg_replace('#^#m', '  ', $this->process->getErrorOutput());
+                $messages[] = '- '.$url."\n".preg_replace('#^#m', '  ', $this->process->getErrorOutput());
                 if ($initialClone) {
                     $this->filesystem->removeDirectory($origCwd);
                 }
             }
 
             // failed to checkout, first check git accessibility
-            $this->throwException('Failed to clone ' . self::sanitizeUrl($url) .' via '.implode(', ', $protocols).' protocols, aborting.' . "\n\n" . implode("\n", $messages), $url);
+            $this->throwException('Failed to clone '.self::sanitizeUrl($url).' via '.implode(', ', $protocols).' protocols, aborting.'."\n\n".implode("\n", $messages), $url);
         }
 
         $command = call_user_func($commandCallable, $url);
@@ -94,14 +94,14 @@ class Git
 
                 if ($this->io->hasAuthentication($match[1])) {
                     $auth = $this->io->getAuthentication($match[1]);
-                    $url = 'https://'.rawurlencode($auth['username']) . ':' . rawurlencode($auth['password']) . '@'.$match[1].'/'.$match[2].'.git';
+                    $url = 'https://'.rawurlencode($auth['username']).':'.rawurlencode($auth['password']).'@'.$match[1].'/'.$match[2].'.git';
 
                     $command = call_user_func($commandCallable, $url);
                     if (0 === $this->process->execute($command, $ignoredOutput, $cwd)) {
                         return;
                     }
                 }
-            } elseif ( // private non-github repo that failed to authenticate
+            } elseif (// private non-github repo that failed to authenticate
                 preg_match('{(https?://)([^/]+)(.*)$}i', $url, $match) &&
                 strpos($this->process->getErrorOutput(), 'fatal: Authentication failed') !== false
             ) {
@@ -116,7 +116,7 @@ class Git
                     $defaultUsername = null;
                     if (isset($authParts) && $authParts) {
                         if (false !== strpos($authParts, ':')) {
-                            list($defaultUsername,) = explode(':', $authParts, 2);
+                            list($defaultUsername, ) = explode(':', $authParts, 2);
                         } else {
                             $defaultUsername = $authParts;
                         }
@@ -147,7 +147,7 @@ class Git
             if ($initialClone) {
                 $this->filesystem->removeDirectory($origCwd);
             }
-            $this->throwException('Failed to execute ' . self::sanitizeUrl($command) . "\n\n" . $this->process->getErrorOutput(), $url);
+            $this->throwException('Failed to execute '.self::sanitizeUrl($command)."\n\n".$this->process->getErrorOutput(), $url);
         }
     }
 
@@ -187,7 +187,7 @@ class Git
     private function throwException($message, $url)
     {
         if (0 !== $this->process->execute('git --version', $ignoredOutput)) {
-            throw new \RuntimeException('Failed to clone '.self::sanitizeUrl($url).', git was not found, check that it is installed and in your PATH env.' . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to clone '.self::sanitizeUrl($url).', git was not found, check that it is installed and in your PATH env.'."\n\n".$this->process->getErrorOutput());
         }
 
         throw new \RuntimeException($message);

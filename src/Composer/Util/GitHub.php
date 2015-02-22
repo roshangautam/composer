@@ -39,15 +39,16 @@ class GitHub
     {
         $this->io = $io;
         $this->config = $config;
-        $this->process = $process ?: new ProcessExecutor;
+        $this->process = $process ?: new ProcessExecutor();
         $this->remoteFilesystem = $remoteFilesystem ?: new RemoteFilesystem($io, $config);
     }
 
     /**
-     * Attempts to authorize a GitHub domain via OAuth
+     * Attempts to authorize a GitHub domain via OAuth.
      *
-     * @param  string $originUrl The host this GitHub instance is located at
-     * @return bool   true on success
+     * @param string $originUrl The host this GitHub instance is located at
+     *
+     * @return bool true on success
      */
     public function authorizeOAuth($originUrl)
     {
@@ -66,13 +67,15 @@ class GitHub
     }
 
     /**
-     * Authorizes a GitHub domain interactively via OAuth
+     * Authorizes a GitHub domain interactively via OAuth.
      *
-     * @param  string                        $originUrl The host this GitHub instance is located at
-     * @param  string                        $message   The reason this authorization is required
+     * @param string $originUrl The host this GitHub instance is located at
+     * @param string $message   The reason this authorization is required
+     *
      * @throws \RuntimeException
      * @throws TransportException|\Exception
-     * @return bool                          true on success
+     *
+     * @return bool true on success
      */
     public function authorizeOAuthInteractively($originUrl, $message = null)
     {
@@ -141,18 +144,18 @@ class GitHub
 
         $headers = array('Content-Type: application/json');
         if ($otp) {
-            $headers[] = 'X-GitHub-OTP: ' . $otp;
+            $headers[] = 'X-GitHub-OTP: '.$otp;
         }
 
         $note = 'Composer';
         if ($this->config->get('github-expose-hostname') === true && 0 === $this->process->execute('hostname', $output)) {
-            $note .= ' on ' . trim($output);
+            $note .= ' on '.trim($output);
         }
-        $note .= ' [' . date('YmdHis') . ']';
+        $note .= ' ['.date('YmdHis').']';
 
-        $apiUrl = ('github.com' === $originUrl) ? 'api.github.com' : $originUrl . '/api/v3';
+        $apiUrl = ('github.com' === $originUrl) ? 'api.github.com' : $originUrl.'/api/v3';
 
-        $json = $this->remoteFilesystem->getContents($originUrl, 'https://'. $apiUrl . '/authorizations', false, array(
+        $json = $this->remoteFilesystem->getContents($originUrl, 'https://'.$apiUrl.'/authorizations', false, array(
             'retry-auth-failure' => false,
             'http' => array(
                 'method' => 'POST',
@@ -163,7 +166,7 @@ class GitHub
                     'note' => $note,
                     'note_url' => 'https://getcomposer.org/',
                 )),
-            )
+            ),
         ));
 
         $this->io->write('Token successfully created');
@@ -198,6 +201,6 @@ class GitHub
             }
         }
 
-        return null;
+        return;
     }
 }

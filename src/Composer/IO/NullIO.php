@@ -13,7 +13,7 @@
 namespace Composer\IO;
 
 /**
- * IOInterface that is not interactive and never writes the output
+ * IOInterface that is not interactive and never writes the output.
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -102,6 +102,6 @@ class NullIO extends BaseIO
      */
     public function askAndHideAnswer($question)
     {
-        return null;
+        return;
     }
 }

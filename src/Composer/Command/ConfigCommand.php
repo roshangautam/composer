@@ -128,15 +128,15 @@ EOT
         // Get the local composer.json, global config.json, or if the user
         // passed in a file to use
         $configFile = $input->getOption('global')
-            ? ($this->config->get('home') . '/config.json')
+            ? ($this->config->get('home').'/config.json')
             : $input->getOption('file');
 
         $this->configFile = new JsonFile($configFile);
         $this->configSource = new JsonConfigSource($this->configFile);
 
         $authConfigFile = $input->getOption('global')
-            ? ($this->config->get('home') . '/auth.json')
-            : dirname(realpath($input->getOption('file'))) . '/auth.json';
+            ? ($this->config->get('home').'/auth.json')
+            : dirname(realpath($input->getOption('file'))).'/auth.json';
 
         $this->authConfigFile = new JsonFile($authConfigFile);
         $this->authConfigSource = new JsonConfigSource($this->authConfigFile, true);
@@ -144,12 +144,12 @@ EOT
         // initialize the global file if it's not there
         if ($input->getOption('global') && !$this->configFile->exists()) {
             touch($this->configFile->getPath());
-            $this->configFile->write(array('config' => new \ArrayObject));
+            $this->configFile->write(array('config' => new \ArrayObject()));
             @chmod($this->configFile->getPath(), 0600);
         }
         if ($input->getOption('global') && !$this->authConfigFile->exists()) {
             touch($this->authConfigFile->getPath());
-            $this->authConfigFile->write(array('http-basic' => new \ArrayObject, 'github-oauth' => new \ArrayObject));
+            $this->authConfigFile->write(array('http-basic' => new \ArrayObject(), 'github-oauth' => new \ArrayObject()));
             @chmod($this->authConfigFile->getPath(), 0600);
         }
 
@@ -180,7 +180,7 @@ EOT
             }
 
             $file = $input->getOption('auth') ? $this->authConfigFile->getPath() : $this->configFile->getPath();
-            system($editor . ' ' . $file . (defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`'));
+            system($editor.' '.$file.(defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`'));
 
             return 0;
         }
@@ -263,7 +263,7 @@ EOT
             'use-include-path' => array($booleanValidator, $booleanNormalizer),
             'preferred-install' => array(
                 function ($val) { return in_array($val, array('auto', 'source', 'dist'), true); },
-                function ($val) { return $val; }
+                function ($val) { return $val; },
             ),
             'store-auths' => array(
                 function ($val) { return in_array($val, array('true', 'false', 'prompt'), true); },
@@ -273,7 +273,7 @@ EOT
                     }
 
                     return $val !== 'false' && (bool) $val;
-                }
+                },
             ),
             'notify-on-install' => array($booleanValidator, $booleanNormalizer),
             'vendor-dir' => array('is_string', function ($val) { return $val; }),
@@ -286,7 +286,7 @@ EOT
             'cache-files-ttl' => array('is_numeric', 'intval'),
             'cache-files-maxsize' => array(
                 function ($val) { return preg_match('/^\s*([0-9.]+)\s*(?:([kmg])(?:i?b)?)?\s*$/i', $val) > 0; },
-                function ($val) { return $val; }
+                function ($val) { return $val; },
             ),
             'discard-changes' => array(
                 function ($val) { return in_array($val, array('stash', 'true', 'false', '1', '0'), true); },
@@ -296,7 +296,7 @@ EOT
                     }
 
                     return $val !== 'false' && (bool) $val;
-                }
+                },
             ),
             'autoloader-suffix' => array('is_string', function ($val) { return $val === 'null' ? null : $val; }),
             'optimize-autoloader' => array($booleanValidator, $booleanNormalizer),
@@ -321,7 +321,7 @@ EOT
                 },
                 function ($vals) {
                     return $vals;
-                }
+                },
             ),
             'github-domains' => array(
                 function ($vals) {
@@ -333,7 +333,7 @@ EOT
                 },
                 function ($vals) {
                     return $vals;
-                }
+                },
             ),
         );
 
@@ -430,7 +430,7 @@ EOT
     }
 
     /**
-     * Display the contents of the file in a pretty formatted way
+     * Display the contents of the file in a pretty formatted way.
      *
      * @param array           $contents
      * @param array           $rawContents
@@ -448,12 +448,12 @@ EOT
             $rawVal = isset($rawContents[$key]) ? $rawContents[$key] : null;
 
             if (is_array($value) && (!is_numeric(key($value)) || ($key === 'repositories' && null === $k))) {
-                $k .= preg_replace('{^config\.}', '', $key . '.');
+                $k .= preg_replace('{^config\.}', '', $key.'.');
                 $this->listConfiguration($value, $rawVal, $output, $k);
 
                 if (substr_count($k, '.') > 1) {
                     $k = str_split($k, strrpos($k, '.', -2));
-                    $k = $k[0] . '.';
+                    $k = $k[0].'.';
                 } else {
                     $k = $origK;
                 }
@@ -474,9 +474,9 @@ EOT
             }
 
             if (is_string($rawVal) && $rawVal != $value) {
-                $output->writeln('[<comment>' . $k . $key . '</comment>] <info>' . $rawVal . ' (' . $value . ')</info>');
+                $output->writeln('[<comment>'.$k.$key.'</comment>] <info>'.$rawVal.' ('.$value.')</info>');
             } else {
-                $output->writeln('[<comment>' . $k . $key . '</comment>] <info>' . $value . '</info>');
+                $output->writeln('[<comment>'.$k.$key.'</comment>] <info>'.$value.'</info>');
             }
         }
     }

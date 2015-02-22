@@ -15,7 +15,7 @@ namespace Composer\Repository\Pear;
 use Composer\Downloader\TransportException;
 
 /**
- * Read PEAR packages using REST 1.0 interface
+ * Read PEAR packages using REST 1.0 interface.
  *
  * At version 1.0 package descriptions read from:
  *  {baseUrl}/p/packages.xml
@@ -37,7 +37,7 @@ class ChannelRest10Reader extends BaseChannelReader
     }
 
     /**
-     * Reads package descriptions using PEAR Rest 1.0 interface
+     * Reads package descriptions using PEAR Rest 1.0 interface.
      *
      * @param $baseUrl  string base Url interface
      *
@@ -50,9 +50,10 @@ class ChannelRest10Reader extends BaseChannelReader
 
     /**
      * Read list of packages from
-     *  {baseUrl}/p/packages.xml
+     *  {baseUrl}/p/packages.xml.
      *
      * @param $baseUrl string
+     *
      * @return PackageInfo[]
      */
     private function readPackages($baseUrl)
@@ -73,15 +74,16 @@ class ChannelRest10Reader extends BaseChannelReader
 
     /**
      * Read package info from
-     *  {baseUrl}/p/{package}/info.xml
+     *  {baseUrl}/p/{package}/info.xml.
      *
      * @param $baseUrl      string
      * @param $packageName  string
+     *
      * @return PackageInfo
      */
     private function readPackage($baseUrl, $packageName)
     {
-        $xmlPath = '/p/' . strtolower($packageName) . '/info.xml';
+        $xmlPath = '/p/'.strtolower($packageName).'/info.xml';
         $xml = $this->requestXml($baseUrl, $xmlPath);
         $xml->registerXPathNamespace('ns', self::PACKAGE_INFO_NS);
 
@@ -103,19 +105,21 @@ class ChannelRest10Reader extends BaseChannelReader
 
     /**
      * Read package releases from
-     *  {baseUrl}/p/{package}/allreleases.xml
+     *  {baseUrl}/p/{package}/allreleases.xml.
      *
      * @param $baseUrl      string
      * @param $packageName  string
+     *
      * @throws \Composer\Downloader\TransportException|\Exception
-     * @return ReleaseInfo[]                                      hash array with keys as version numbers
+     *
+     * @return ReleaseInfo[] hash array with keys as version numbers
      */
     private function readPackageReleases($baseUrl, $packageName)
     {
         $result = array();
 
         try {
-            $xmlPath = '/r/' . strtolower($packageName) . '/allreleases.xml';
+            $xmlPath = '/r/'.strtolower($packageName).'/allreleases.xml';
             $xml = $this->requestXml($baseUrl, $xmlPath);
             $xml->registerXPathNamespace('ns', self::ALL_RELEASES_NS);
             foreach ($xml->xpath('ns:r') as $node) {
@@ -144,18 +148,19 @@ class ChannelRest10Reader extends BaseChannelReader
 
     /**
      * Read package dependencies from
-     *  {baseUrl}/p/{package}/deps.{version}.txt
+     *  {baseUrl}/p/{package}/deps.{version}.txt.
      *
      * @param $baseUrl      string
      * @param $packageName  string
      * @param $version      string
+     *
      * @return DependencyInfo[]
      */
     private function readPackageReleaseDependencies($baseUrl, $packageName, $version)
     {
         $dependencyReader = new PackageDependencyParser();
 
-        $depthPath = '/r/' . strtolower($packageName) . '/deps.' . $version . '.txt';
+        $depthPath = '/r/'.strtolower($packageName).'/deps.'.$version.'.txt';
         $content = $this->requestContent($baseUrl, $depthPath);
         $dependencyArray = unserialize($content);
         $result = $dependencyReader->buildDependencyInfo($dependencyArray);

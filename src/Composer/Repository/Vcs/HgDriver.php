@@ -38,7 +38,7 @@ class HgDriver extends VcsDriver
             $this->repoDir = $this->url;
         } else {
             $cacheDir = $this->config->get('cache-vcs-dir');
-            $this->repoDir = $cacheDir . '/' . preg_replace('{[^a-z0-9]}i', '-', $this->url) . '/';
+            $this->repoDir = $cacheDir.'/'.preg_replace('{[^a-z0-9]}i', '-', $this->url).'/';
 
             $fs = new Filesystem();
             $fs->ensureDirectoryExists($cacheDir);
@@ -60,10 +60,10 @@ class HgDriver extends VcsDriver
                     $output = $this->process->getErrorOutput();
 
                     if (0 !== $this->process->execute('hg --version', $ignoredOutput)) {
-                        throw new \RuntimeException('Failed to clone '.$this->url.', hg was not found, check that it is installed and in your PATH env.' . "\n\n" . $this->process->getErrorOutput());
+                        throw new \RuntimeException('Failed to clone '.$this->url.', hg was not found, check that it is installed and in your PATH env.'."\n\n".$this->process->getErrorOutput());
                     }
 
-                    throw new \RuntimeException('Failed to clone '.$this->url.', could not read packages from it' . "\n\n" .$output);
+                    throw new \RuntimeException('Failed to clone '.$this->url.', could not read packages from it'."\n\n".$output);
                 }
             }
         }
@@ -107,7 +107,7 @@ class HgDriver extends VcsDriver
      */
     public function getDist($identifier)
     {
-        return null;
+        return;
     }
 
     /**

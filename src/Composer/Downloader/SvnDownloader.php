@@ -52,8 +52,8 @@ class SvnDownloader extends VcsDownloader
             }
         }
 
-        $this->io->write("    Checking out " . $ref);
-        $this->execute($url, "svn switch" . $flags, sprintf("%s/%s", $url, $ref), $path);
+        $this->io->write("    Checking out ".$ref);
+        $this->execute($url, "svn switch".$flags, sprintf("%s/%s", $url, $ref), $path);
     }
 
     /**
@@ -74,12 +74,14 @@ class SvnDownloader extends VcsDownloader
      * Execute an SVN command and try to fix up the process with credentials
      * if necessary.
      *
-     * @param  string            $baseUrl Base URL of the repository
-     * @param  string            $command SVN command to run
-     * @param  string            $url     SVN url
-     * @param  string            $cwd     Working directory
-     * @param  string            $path    Target for a checkout
+     * @param string $baseUrl Base URL of the repository
+     * @param string $command SVN command to run
+     * @param string $url     SVN url
+     * @param string $cwd     Working directory
+     * @param string $path    Target for a checkout
+     *
      * @throws \RuntimeException
+     *
      * @return string
      */
     protected function execute($baseUrl, $command, $url, $cwd = null, $path = null)
@@ -117,7 +119,7 @@ class SvnDownloader extends VcsDownloader
         $this->io->write('    <error>The package has modified files:</error>');
         $this->io->write(array_slice($changes, 0, 10));
         if (count($changes) > 10) {
-            $this->io->write('    <info>'.count($changes) - 10 . ' more files modified, choose "v" to view the full list</info>');
+            $this->io->write('    <info>'.count($changes) - 10 .' more files modified, choose "v" to view the full list</info>');
         }
 
         while (true) {
@@ -151,7 +153,7 @@ class SvnDownloader extends VcsDownloader
      */
     protected function getCommitLogs($fromReference, $toReference, $path)
     {
-        if (preg_match('{.*@(\d+)$}', $fromReference) && preg_match('{.*@(\d+)$}', $toReference) ) {
+        if (preg_match('{.*@(\d+)$}', $fromReference) && preg_match('{.*@(\d+)$}', $toReference)) {
             // strip paths from references and only keep the actual revision
             $fromRevision = preg_replace('{.*@(\d+)$}', '$1', $fromReference);
             $toRevision = preg_replace('{.*@(\d+)$}', '$1', $toReference);
@@ -160,7 +162,7 @@ class SvnDownloader extends VcsDownloader
 
             if (0 !== $this->process->execute($command, $output, $path)) {
                 throw new \RuntimeException(
-                    'Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput()
+                    'Failed to execute '.$command."\n\n".$this->process->getErrorOutput()
                 );
             }
         } else {

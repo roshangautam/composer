@@ -28,7 +28,7 @@ use Composer\Json\JsonValidationException;
 use Composer\Util\ErrorHandler;
 
 /**
- * The console application that handles the commands
+ * The console application that handles the commands.
  *
  * @author Ryan Weaver <ryan@knplabs.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -118,7 +118,7 @@ class Application extends BaseApplication
             $oldWorkingDir = getcwd();
             chdir($newWorkDir);
             if ($output->getVerbosity() >= 4) {
-                $output->writeln('Changed CWD to ' . getcwd());
+                $output->writeln('Changed CWD to '.getcwd());
             }
         }
 
@@ -157,8 +157,10 @@ class Application extends BaseApplication
     }
 
     /**
-     * @param  InputInterface    $input
+     * @param InputInterface $input
+     *
      * @return string
+     *
      * @throws \RuntimeException
      */
     private function getNewWorkingDir(InputInterface $input)
@@ -206,9 +208,11 @@ class Application extends BaseApplication
     }
 
     /**
-     * @param  bool                    $required
-     * @param  bool                    $disablePlugins
+     * @param bool $required
+     * @param bool $disablePlugins
+     *
      * @throws JsonValidationException
+     *
      * @return \Composer\Composer
      */
     public function getComposer($required = true, $disablePlugins = false)
@@ -222,8 +226,8 @@ class Application extends BaseApplication
                     exit(1);
                 }
             } catch (JsonValidationException $e) {
-                $errors = ' - ' . implode(PHP_EOL . ' - ', $e->getErrors());
-                $message = $e->getMessage() . ':' . PHP_EOL . $errors;
+                $errors = ' - '.implode(PHP_EOL.' - ', $e->getErrors());
+                $message = $e->getMessage().':'.PHP_EOL.$errors;
                 throw new JsonValidationException($message);
             }
         }
@@ -232,7 +236,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * Removes the cached composer instance
+     * Removes the cached composer instance.
      */
     public function resetComposer()
     {
@@ -249,11 +253,11 @@ class Application extends BaseApplication
 
     public function getHelp()
     {
-        return self::$logo . parent::getHelp();
+        return self::$logo.parent::getHelp();
     }
 
     /**
-     * Initializes all the composer commands
+     * Initializes all the composer commands.
      */
     protected function getDefaultCommands()
     {
@@ -302,7 +306,7 @@ class Application extends BaseApplication
             );
         }
 
-        return parent::getLongVersion() . ' ' . Composer::RELEASE_DATE;
+        return parent::getLongVersion().' '.Composer::RELEASE_DATE;
     }
 
     /**

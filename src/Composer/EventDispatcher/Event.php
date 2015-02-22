@@ -13,7 +13,7 @@
 namespace Composer\EventDispatcher;
 
 /**
- * The base event class
+ * The base event class.
  *
  * @author Nils Adermann <naderman@naderman.de>
  */
@@ -84,7 +84,7 @@ class Event
     }
 
     /**
-     * Checks if stopPropagation has been called
+     * Checks if stopPropagation has been called.
      *
      * @return boolean Whether propagation has been stopped
      */
@@ -94,7 +94,7 @@ class Event
     }
 
     /**
-     * Prevents the event from being passed to further listeners
+     * Prevents the event from being passed to further listeners.
      */
     public function stopPropagation()
     {

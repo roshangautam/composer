@@ -43,9 +43,10 @@ class Filesystem
     }
 
     /**
-     * Checks if a directory is empty
+     * Checks if a directory is empty.
      *
-     * @param  string $dir
+     * @param string $dir
+     *
      * @return bool
      */
     public function isDirEmpty($dir)
@@ -83,12 +84,13 @@ class Filesystem
     }
 
     /**
-     * Recursively remove a directory
+     * Recursively remove a directory.
      *
      * Uses the process component if proc_open is enabled on the PHP
      * installation.
      *
-     * @param  string $directory
+     * @param string $directory
+     *
      * @return bool
      *
      * @throws \RuntimeException
@@ -136,7 +138,8 @@ class Filesystem
      * before directories, creating a single non-recursive loop
      * to delete files/directories in the correct order.
      *
-     * @param  string $directory
+     * @param string $directory
+     *
      * @return bool
      */
     public function removeDirectoryPhp($directory)
@@ -172,9 +175,10 @@ class Filesystem
     }
 
     /**
-     * Attempts to unlink a file and in case of failure retries after 350ms on windows
+     * Attempts to unlink a file and in case of failure retries after 350ms on windows.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return bool
      *
      * @throws \RuntimeException
@@ -185,7 +189,7 @@ class Filesystem
             // retry after a bit on windows since it tends to be touchy with mass removals
             if (!defined('PHP_WINDOWS_VERSION_BUILD') || (usleep(350000) && !@$this->unlinkImplementation($path))) {
                 $error = error_get_last();
-                $message = 'Could not delete '.$path.': ' . @$error['message'];
+                $message = 'Could not delete '.$path.': '.@$error['message'];
                 if (defined('PHP_WINDOWS_VERSION_BUILD')) {
                     $message .= "\nThis can be due to an antivirus or the Windows Search Indexer locking the file while they are analyzed";
                 }
@@ -198,9 +202,10 @@ class Filesystem
     }
 
     /**
-     * Attempts to rmdir a file and in case of failure retries after 350ms on windows
+     * Attempts to rmdir a file and in case of failure retries after 350ms on windows.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return bool
      *
      * @throws \RuntimeException
@@ -211,7 +216,7 @@ class Filesystem
             // retry after a bit on windows since it tends to be touchy with mass removals
             if (!defined('PHP_WINDOWS_VERSION_BUILD') || (usleep(350000) && !@rmdir($path))) {
                 $error = error_get_last();
-                $message = 'Could not delete '.$path.': ' . @$error['message'];
+                $message = 'Could not delete '.$path.': '.@$error['message'];
                 if (defined('PHP_WINDOWS_VERSION_BUILD')) {
                     $message .= "\nThis can be due to an antivirus or the Windows Search Indexer locking the file while they are analyzed";
                 }
@@ -246,7 +251,7 @@ class Filesystem
         $this->ensureDirectoryExists($target);
 
         foreach ($ri as $file) {
-            $targetPath = $target . DIRECTORY_SEPARATOR . $ri->getSubPathName();
+            $targetPath = $target.DIRECTORY_SEPARATOR.$ri->getSubPathName();
             if ($file->isDir()) {
                 $this->ensureDirectoryExists($targetPath);
             } else {
@@ -298,12 +303,14 @@ class Filesystem
     }
 
     /**
-     * Returns the shortest path from $from to $to
+     * Returns the shortest path from $from to $to.
      *
-     * @param  string                    $from
-     * @param  string                    $to
-     * @param  bool                      $directories if true, the source/target are considered to be directories
+     * @param string $from
+     * @param string $to
+     * @param bool   $directories if true, the source/target are considered to be directories
+     *
      * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function findShortestPath($from, $to, $directories = false)
@@ -332,20 +339,22 @@ class Filesystem
             return $to;
         }
 
-        $commonPath = rtrim($commonPath, '/') . '/';
+        $commonPath = rtrim($commonPath, '/').'/';
         $sourcePathDepth = substr_count(substr($from, strlen($commonPath)), '/');
         $commonPathCode = str_repeat('../', $sourcePathDepth);
 
-        return ($commonPathCode . substr($to, strlen($commonPath))) ?: './';
+        return ($commonPathCode.substr($to, strlen($commonPath))) ?: './';
     }
 
     /**
-     * Returns PHP code that, when executed in $from, will return the path to $to
+     * Returns PHP code that, when executed in $from, will return the path to $to.
      *
-     * @param  string                    $from
-     * @param  string                    $to
-     * @param  bool                      $directories if true, the source/target are considered to be directories
+     * @param string $from
+     * @param string $to
+     * @param bool   $directories if true, the source/target are considered to be directories
+     *
      * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function findShortestPathCode($from, $to, $directories = false)
@@ -370,7 +379,7 @@ class Filesystem
             return var_export($to, true);
         }
 
-        $commonPath = rtrim($commonPath, '/') . '/';
+        $commonPath = rtrim($commonPath, '/').'/';
         if (strpos($to, $from.'/') === 0) {
             return '__DIR__ . '.var_export(substr($to, strlen($from)), true);
         }
@@ -378,13 +387,14 @@ class Filesystem
         $commonPathCode = str_repeat('dirname(', $sourcePathDepth).'__DIR__'.str_repeat(')', $sourcePathDepth);
         $relTarget = substr($to, strlen($commonPath));
 
-        return $commonPathCode . (strlen($relTarget) ? '.' . var_export('/' . $relTarget, true) : '');
+        return $commonPathCode.(strlen($relTarget) ? '.'.var_export('/'.$relTarget, true) : '');
     }
 
     /**
-     * Checks if the given path is absolute
+     * Checks if the given path is absolute.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return bool
      */
     public function isAbsolutePath($path)
@@ -396,8 +406,10 @@ class Filesystem
      * Returns size of a file or directory specified by path. If a directory is
      * given, it's size will be computed recursively.
      *
-     * @param  string            $path Path to the file or directory
+     * @param string $path Path to the file or directory
+     *
      * @throws \RuntimeException
+     *
      * @return int
      */
     public function size($path)
@@ -416,7 +428,8 @@ class Filesystem
      * Normalize a path. This replaces backslashes with slashes, removes ending
      * slash and collapses redundant separators and up-level references.
      *
-     * @param  string $path Path to the file or directory
+     * @param string $path Path to the file or directory
+     *
      * @return string
      */
     public function normalizePath($path)
@@ -451,9 +464,10 @@ class Filesystem
     }
 
     /**
-     * Return if the given path is local
+     * Return if the given path is local.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return bool
      */
     public static function isLocalPath($path)
@@ -487,11 +501,11 @@ class Filesystem
 
     protected function getProcess()
     {
-        return new ProcessExecutor;
+        return new ProcessExecutor();
     }
 
     /**
-     * delete symbolic link implementation (commonly known as "unlink()")
+     * delete symbolic link implementation (commonly known as "unlink()").
      *
      * symbolic links on windows which link to directories need rmdir instead of unlink
      *
@@ -532,7 +546,7 @@ class Filesystem
     }
 
     /**
-     * resolve pathname to symbolic link of a directory
+     * resolve pathname to symbolic link of a directory.
      *
      * @param string $pathname directory path to resolve
      *

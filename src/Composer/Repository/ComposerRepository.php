@@ -65,7 +65,7 @@ class ComposerRepository extends ArrayRepository
         $repoConfig['url'] = rtrim($repoConfig['url'], '/');
 
         if ('https?' === substr($repoConfig['url'], 0, 6)) {
-            $repoConfig['url'] = (extension_loaded('openssl') ? 'https' : 'http') . substr($repoConfig['url'], 6);
+            $repoConfig['url'] = (extension_loaded('openssl') ? 'https' : 'http').substr($repoConfig['url'], 6);
         }
 
         $urlBits = parse_url($repoConfig['url']);
@@ -376,7 +376,7 @@ class ComposerRepository extends ArrayRepository
     }
 
     /**
-     * Adds a new package to the repository
+     * Adds a new package to the repository.
      *
      * @param PackageInterface $package
      */
@@ -401,7 +401,7 @@ class ComposerRepository extends ArrayRepository
         if (isset($jsonUrlParts['path']) && false !== strpos($jsonUrlParts['path'], '.json')) {
             $jsonUrl = $this->url;
         } else {
-            $jsonUrl = $this->url . '/packages.json';
+            $jsonUrl = $this->url.'/packages.json';
         }
 
         $data = $this->fetchFile($jsonUrl, 'packages.json');
@@ -461,7 +461,7 @@ class ComposerRepository extends ArrayRepository
     protected function canonicalizeUrl($url)
     {
         if ('/' === $url[0]) {
-            return preg_replace('{(https?://[^/]+).*}i', '$1' . $url, $this->url);
+            return preg_replace('{(https?://[^/]+).*}i', '$1'.$url, $this->url);
         }
 
         return $url;
@@ -486,8 +486,8 @@ class ComposerRepository extends ArrayRepository
         if ($this->providersUrl && isset($data['provider-includes'])) {
             $includes = $data['provider-includes'];
             foreach ($includes as $include => $metadata) {
-                $url = $this->baseUrl . '/' . str_replace('%hash%', $metadata['sha256'], $include);
-                $cacheKey = str_replace(array('%hash%','$'), '', $include);
+                $url = $this->baseUrl.'/'.str_replace('%hash%', $metadata['sha256'], $include);
+                $cacheKey = str_replace(array('%hash%', '$'), '', $include);
                 if ($this->cache->sha256($cacheKey) === $metadata['sha256']) {
                     $includedData = json_decode($this->cache->read($cacheKey), true);
                 } else {

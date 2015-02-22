@@ -24,7 +24,7 @@ use Composer\Util\RemoteFilesystem;
 abstract class BaseChannelReader
 {
     /**
-     * PEAR REST Interface namespaces
+     * PEAR REST Interface namespaces.
      */
     const CHANNEL_NS = 'http://pear.php.net/channel-1.0';
     const ALL_CATEGORIES_NS = 'http://pear.php.net/dtd/rest.allcategories';
@@ -46,26 +46,30 @@ abstract class BaseChannelReader
      *
      * @param $origin string server
      * @param $path   string relative path to content
+     *
      * @throws \UnexpectedValueException
+     *
      * @return \SimpleXMLElement
      */
     protected function requestContent($origin, $path)
     {
-        $url = rtrim($origin, '/') . '/' . ltrim($path, '/');
+        $url = rtrim($origin, '/').'/'.ltrim($path, '/');
         $content = $this->rfs->getContents($origin, $url, false);
         if (!$content) {
-            throw new \UnexpectedValueException('The PEAR channel at ' . $url . ' did not respond.');
+            throw new \UnexpectedValueException('The PEAR channel at '.$url.' did not respond.');
         }
 
         return $content;
     }
 
     /**
-     * Read xml content from remote filesystem
+     * Read xml content from remote filesystem.
      *
      * @param $origin string server
      * @param $path   string relative path to content
+     *
      * @throws \UnexpectedValueException
+     *
      * @return \SimpleXMLElement
      */
     protected function requestXml($origin, $path)
@@ -74,8 +78,8 @@ abstract class BaseChannelReader
         $xml = simplexml_load_string($this->requestContent($origin, $path), "SimpleXMLElement", LIBXML_NOERROR);
 
         if (false == $xml) {
-            $url = rtrim($origin, '/') . '/' . ltrim($path, '/');
-            throw new \UnexpectedValueException(sprintf('The PEAR channel at ' . $origin . ' is broken. (Invalid XML at file `%s`)', $path));
+            $url = rtrim($origin, '/').'/'.ltrim($path, '/');
+            throw new \UnexpectedValueException(sprintf('The PEAR channel at '.$origin.' is broken. (Invalid XML at file `%s`)', $path));
         }
 
         return $xml;

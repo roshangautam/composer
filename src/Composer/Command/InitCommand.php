@@ -44,7 +44,7 @@ class InitCommand extends Command
             if ($this->isValidEmail($match['email'])) {
                 return array(
                     'name'  => trim($match['name']),
-                    'email' => $match['email']
+                    'email' => $match['email'],
                 );
             }
         }
@@ -100,15 +100,15 @@ EOT
             unset($options['stability']);
         }
 
-        $options['require'] = isset($options['require']) ? $this->formatRequirements($options['require']) : new \stdClass;
+        $options['require'] = isset($options['require']) ? $this->formatRequirements($options['require']) : new \stdClass();
         if (array() === $options['require']) {
-            $options['require'] = new \stdClass;
+            $options['require'] = new \stdClass();
         }
 
         if (isset($options['require-dev'])) {
             $options['require-dev'] = $this->formatRequirements($options['require-dev']);
             if (array() === $options['require-dev']) {
-                $options['require-dev'] = new \stdClass;
+                $options['require-dev'] = new \stdClass();
             }
         }
 
@@ -120,7 +120,7 @@ EOT
             $output->writeln(array(
                 '',
                 $json,
-                ''
+                '',
             ));
             if (!$dialog->askConfirmation($output, $dialog->getQuestion('Do you confirm generation', 'yes', '?'), true)) {
                 $output->writeln('<error>Command aborted</error>');
@@ -135,7 +135,7 @@ EOT
             $ignoreFile = realpath('.gitignore');
 
             if (false === $ignoreFile) {
-                $ignoreFile = realpath('.') . '/.gitignore';
+                $ignoreFile = realpath('.').'/.gitignore';
             }
 
             if (!$this->hasVendorIgnore($ignoreFile)) {
@@ -157,7 +157,7 @@ EOT
         $output->writeln(array(
             '',
             $formatter->formatBlock('Welcome to the Composer config generator', 'bg=blue;fg=white', true),
-            ''
+            '',
         ));
 
         // namespace
@@ -174,14 +174,14 @@ EOT
             $name = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $name);
             $name = strtolower($name);
             if (isset($git['github.user'])) {
-                $name = $git['github.user'] . '/' . $name;
+                $name = $git['github.user'].'/'.$name;
             } elseif (!empty($_SERVER['USERNAME'])) {
-                $name = $_SERVER['USERNAME'] . '/' . $name;
+                $name = $_SERVER['USERNAME'].'/'.$name;
             } elseif (get_current_user()) {
-                $name = get_current_user() . '/' . $name;
+                $name = get_current_user().'/'.$name;
             } else {
                 // package names must be in the format foo/bar
-                $name = $name . '/' . $name;
+                $name = $name.'/'.$name;
             }
         } else {
             if (!preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}', $name)) {
@@ -269,7 +269,7 @@ EOT
         $output->writeln(array(
             '',
             'Define your dependencies.',
-            ''
+            '',
         ));
 
         $requirements = array();
@@ -293,7 +293,7 @@ EOT
     {
         if (!$this->repos) {
             $this->repos = new CompositeRepository(array_merge(
-                array(new PlatformRepository),
+                array(new PlatformRepository()),
                 Factory::createDefaultRepositories($this->getIO())
             ));
         }
@@ -323,7 +323,7 @@ EOT
                     ));
                 }
 
-                $result[] = $requirement['name'] . ' ' . $requirement['version'];
+                $result[] = $requirement['name'].' '.$requirement['version'];
             }
 
             return $result;
@@ -348,7 +348,7 @@ EOT
                     $output->writeln(array(
                         '',
                         sprintf('Found <info>%s</info> packages matching <info>%s</info>', count($matches), $package),
-                        ''
+                        '',
                     ));
 
                     $output->writeln($choices);
@@ -504,7 +504,7 @@ EOT
             }
         }
 
-        file_put_contents($ignoreFile, $contents . $vendor. "\n");
+        file_put_contents($ignoreFile, $contents.$vendor."\n");
     }
 
     protected function isValidEmail($email)
@@ -553,9 +553,11 @@ EOT
      *
      * This returns a version with the ~ operator prefixed when possible.
      *
-     * @param  InputInterface            $input
-     * @param  string                    $name
+     * @param InputInterface $input
+     * @param string         $name
+     *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     private function findBestVersionForPackage(InputInterface $input, $name)

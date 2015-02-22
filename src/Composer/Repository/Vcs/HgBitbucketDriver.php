@@ -45,7 +45,7 @@ class HgBitbucketDriver extends VcsDriver
     public function getRootIdentifier()
     {
         if (null === $this->rootIdentifier) {
-            $resource = $this->getScheme() . '://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/tags';
+            $resource = $this->getScheme().'://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/tags';
             $repoData = JsonFile::parseJson($this->getContents($resource), $resource);
             if (array() === $repoData || !isset($repoData['tip'])) {
                 throw new \RuntimeException($this->url.' does not appear to be a mercurial repository, use '.$this->url.'.git if this is a git bitbucket repository');
@@ -77,7 +77,7 @@ class HgBitbucketDriver extends VcsDriver
      */
     public function getDist($identifier)
     {
-        $url = $this->getScheme() . '://bitbucket.org/'.$this->owner.'/'.$this->repository.'/get/'.$identifier.'.zip';
+        $url = $this->getScheme().'://bitbucket.org/'.$this->owner.'/'.$this->repository.'/get/'.$identifier.'.zip';
 
         return array('type' => 'zip', 'url' => $url, 'reference' => $identifier, 'shasum' => '');
     }
@@ -88,7 +88,7 @@ class HgBitbucketDriver extends VcsDriver
     public function getComposerInformation($identifier)
     {
         if (!isset($this->infoCache[$identifier])) {
-            $resource = $this->getScheme() . '://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/src/'.$identifier.'/composer.json';
+            $resource = $this->getScheme().'://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/src/'.$identifier.'/composer.json';
             $repoData = JsonFile::parseJson($this->getContents($resource), $resource);
 
             // Bitbucket does not send different response codes for found and
@@ -103,7 +103,7 @@ class HgBitbucketDriver extends VcsDriver
             $composer = JsonFile::parseJson($repoData['data'], $resource);
 
             if (empty($composer['time'])) {
-                $resource = $this->getScheme() . '://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/changesets/'.$identifier;
+                $resource = $this->getScheme().'://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/changesets/'.$identifier;
                 $changeset = JsonFile::parseJson($this->getContents($resource), $resource);
                 $composer['time'] = $changeset['timestamp'];
             }
@@ -119,7 +119,7 @@ class HgBitbucketDriver extends VcsDriver
     public function getTags()
     {
         if (null === $this->tags) {
-            $resource = $this->getScheme() . '://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/tags';
+            $resource = $this->getScheme().'://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/tags';
             $tagsData = JsonFile::parseJson($this->getContents($resource), $resource);
             $this->tags = array();
             foreach ($tagsData as $tag => $data) {
@@ -137,7 +137,7 @@ class HgBitbucketDriver extends VcsDriver
     public function getBranches()
     {
         if (null === $this->branches) {
-            $resource = $this->getScheme() . '://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/branches';
+            $resource = $this->getScheme().'://bitbucket.org/api/1.0/repositories/'.$this->owner.'/'.$this->repository.'/branches';
             $branchData = JsonFile::parseJson($this->getContents($resource), $resource);
             $this->branches = array();
             foreach ($branchData as $branch => $data) {

@@ -286,11 +286,12 @@ EOF;
     }
 
     /**
-     * Compiles an ordered list of namespace => path mappings
+     * Compiles an ordered list of namespace => path mappings.
      *
-     * @param  array            $packageMap  array of array(package, installDir-relative-to-composer.json)
-     * @param  PackageInterface $mainPackage root package instance
-     * @return array            array('psr-0' => array('Ns\\Foo' => array('installDir')))
+     * @param array            $packageMap  array of array(package, installDir-relative-to-composer.json)
+     * @param PackageInterface $mainPackage root package instance
+     *
+     * @return array array('psr-0' => array('Ns\\Foo' => array('installDir')))
      */
     public function parseAutoloads(array $packageMap, PackageInterface $mainPackage)
     {
@@ -311,9 +312,10 @@ EOF;
     }
 
     /**
-     * Registers an autoloader based on an autoload map returned by parseAutoloads
+     * Registers an autoloader based on an autoload map returned by parseAutoloads.
      *
-     * @param  array       $autoloads see parseAutoloads return value
+     * @param array $autoloads see parseAutoloads return value
+     *
      * @return ClassLoader
      */
     public function createLoader(array $autoloads)
@@ -358,7 +360,7 @@ EOF;
 
         $includePathsCode = '';
         foreach ($includePaths as $path) {
-            $includePathsCode .= "    " . $this->getPathCode($filesystem, $basePath, $vendorPath, $path) . ",\n";
+            $includePathsCode .= "    ".$this->getPathCode($filesystem, $basePath, $vendorPath, $path).",\n";
         }
 
         return <<<EOF
@@ -383,7 +385,7 @@ EOF;
         }
 
         if (!$filesCode) {
-            return FALSE;
+            return false;
         }
 
         return <<<EOF
@@ -403,7 +405,7 @@ EOF;
     protected function getPathCode(Filesystem $filesystem, $basePath, $vendorPath, $path)
     {
         if (!$filesystem->isAbsolutePath($path)) {
-            $path = $basePath . '/' . $path;
+            $path = $basePath.'/'.$path;
         }
         $path = $filesystem->normalizePath($path);
 
@@ -419,15 +421,15 @@ EOF;
             $path = $filesystem->normalizePath($filesystem->findShortestPath($basePath, $path, true));
             if (!$filesystem->isAbsolutePath($path)) {
                 $baseDir = '$baseDir . ';
-                $path = '/' . $path;
+                $path = '/'.$path;
             }
         }
 
         if (preg_match('/\.phar$/', $path)) {
-            $baseDir = "'phar://' . " . $baseDir;
+            $baseDir = "'phar://' . ".$baseDir;
         }
 
-        return $baseDir . (($path !== false) ? var_export($path, true) : "");
+        return $baseDir.(($path !== false) ? var_export($path, true) : "");
     }
 
     protected function getAutoloadFile($vendorPathToTargetDirCode, $suffix)
@@ -568,7 +570,7 @@ METHOD_FOOTER;
 
         $file .= $targetDirLoader;
 
-        return $file . <<<FOOTER
+        return $file.<<<FOOTER
 }
 
 function composerRequire$suffix(\$file)
@@ -608,7 +610,7 @@ FOOTER;
                             $path = ltrim(preg_replace('{^'.$targetDir.'}', '', ltrim($path, '\\/')), '\\/');
                         } else {
                             // add target-dir from file paths that don't have it
-                            $path = $package->getTargetDir() . '/' . $path;
+                            $path = $package->getTargetDir().'/'.$path;
                         }
                     }
 
@@ -628,11 +630,12 @@ FOOTER;
     }
 
     /**
-     * Sorts packages by dependency weight
+     * Sorts packages by dependency weight.
      *
      * Packages of equal weight retain the original order
      *
-     * @param  array $packageMap
+     * @param array $packageMap
+     *
      * @return array
      */
     protected function sortPackageMap(array $packageMap)

@@ -35,7 +35,7 @@ class RunScriptCommand extends Command
         ScriptEvents::PRE_STATUS_CMD,
         ScriptEvents::POST_STATUS_CMD,
         ScriptEvents::POST_ROOT_PACKAGE_INSTALL,
-        ScriptEvents::POST_CREATE_PROJECT_CMD
+        ScriptEvents::POST_CREATE_PROJECT_CMD,
     );
 
     /**
@@ -45,7 +45,7 @@ class RunScriptCommand extends Command
         ScriptEvents::PRE_ARCHIVE_CMD,
         ScriptEvents::POST_ARCHIVE_CMD,
         ScriptEvents::PRE_AUTOLOAD_DUMP,
-        ScriptEvents::POST_AUTOLOAD_DUMP
+        ScriptEvents::POST_AUTOLOAD_DUMP,
     );
 
     protected function configure()
@@ -115,7 +115,7 @@ EOT
 
         $output->writeln('<info>scripts:</info>');
         foreach ($scripts as $name => $script) {
-            $output->writeln('  ' . $name);
+            $output->writeln('  '.$name);
         }
 
         return 0;

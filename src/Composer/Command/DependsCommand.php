@@ -86,7 +86,7 @@ EOT
                 foreach ($package->{'get'.$linkTypes[$type][0]}() as $link) {
                     if ($link->getTarget() === $needle) {
                         if (!isset($outputPackages[$package->getName()])) {
-                            $messages[] = '<info>'.$package->getPrettyName() . '</info> ' . $linkTypes[$type][1] . ' ' . $needle .' (<info>' . $link->getPrettyConstraint() . '</info>)';
+                            $messages[] = '<info>'.$package->getPrettyName().'</info> '.$linkTypes[$type][1].' '.$needle.' (<info>'.$link->getPrettyConstraint().'</info>)';
                             $outputPackages[$package->getName()] = true;
                         }
                     }

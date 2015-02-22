@@ -85,8 +85,8 @@ class NoProxyPattern
             } else {
                 // match end of domain
 
-                $haystack = '.' . trim($host, '.') . '.';
-                $needle = '.'. trim($ruleHost, '.') .'.';
+                $haystack = '.'.trim($host, '.').'.';
+                $needle = '.'.trim($ruleHost, '.').'.';
                 $match = stripos(strrev($haystack), strrev($needle)) === 0;
             }
 
@@ -107,7 +107,7 @@ class NoProxyPattern
     }
 
     /**
-     * Check an IP address against a CIDR
+     * Check an IP address against a CIDR.
      *
      * http://framework.zend.com/svn/framework/extras/incubator/library/ZendX/Whois/Adapter/Cidr.php
      *

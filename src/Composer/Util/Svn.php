@@ -74,7 +74,7 @@ class Svn
         $this->url = $url;
         $this->io  = $io;
         $this->config = $config;
-        $this->process = $process ?: new ProcessExecutor;
+        $this->process = $process ?: new ProcessExecutor();
     }
 
     public static function cleanEnv()
@@ -158,6 +158,7 @@ class Svn
      * Repositories requests credentials, let's put them in.
      *
      * @return \Composer\Util\Svn
+     *
      * @throws \RuntimeException
      */
     protected function doAuthDance()
@@ -199,7 +200,7 @@ class Svn
         );
 
         if ($path) {
-            $cmd .= ' ' . ProcessExecutor::escape($path);
+            $cmd .= ' '.ProcessExecutor::escape($path);
         }
 
         return $cmd;
@@ -230,6 +231,7 @@ class Svn
      * Get the password for the svn command. Can be empty.
      *
      * @return string
+     *
      * @throws \LogicException
      */
     protected function getPassword()
@@ -245,6 +247,7 @@ class Svn
      * Get the username for the svn command.
      *
      * @return string
+     *
      * @throws \LogicException
      */
     protected function getUsername()
@@ -309,7 +312,7 @@ class Svn
     }
 
     /**
-     * Create the auth params from the url
+     * Create the auth params from the url.
      *
      * @return bool
      */

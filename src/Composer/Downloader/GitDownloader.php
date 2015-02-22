@@ -82,7 +82,7 @@ class GitDownloader extends VcsDownloader
         $command = 'git remote set-url composer %s && git fetch composer && git fetch --tags composer';
 
         $commandCallable = function ($url) use ($command) {
-            return sprintf($command, ProcessExecutor::escape ($url));
+            return sprintf($command, ProcessExecutor::escape($url));
         };
 
         $this->gitUtil->runCommand($commandCallable, $url, $path);
@@ -107,7 +107,7 @@ class GitDownloader extends VcsDownloader
 
         $command = 'git status --porcelain --untracked-files=no';
         if (0 !== $this->process->execute($command, $output, $path)) {
-            throw new \RuntimeException('Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to execute '.$command."\n\n".$this->process->getErrorOutput());
         }
 
         return trim($output) ?: null;
@@ -146,7 +146,7 @@ class GitDownloader extends VcsDownloader
         $this->io->write('    <error>The package has modified files:</error>');
         $this->io->write(array_slice($changes, 0, 10));
         if (count($changes) > 10) {
-            $this->io->write('    <info>'.count($changes) - 10 . ' more files modified, choose "v" to view the full list</info>');
+            $this->io->write('    <info>'.count($changes) - 10 .' more files modified, choose "v" to view the full list</info>');
         }
 
         while (true) {
@@ -203,12 +203,13 @@ class GitDownloader extends VcsDownloader
     }
 
     /**
-     * Updates the given path to the given commit ref
+     * Updates the given path to the given commit ref.
      *
-     * @param  string      $path
-     * @param  string      $reference
-     * @param  string      $branch
-     * @param  \DateTime   $date
+     * @param string    $path
+     * @param string    $reference
+     * @param string    $branch
+     * @param \DateTime $date
+     *
      * @return null|string if a string is returned, it is the commit reference that was checked out if the original could not be found
      *
      * @throws \RuntimeException
@@ -239,7 +240,7 @@ class GitDownloader extends VcsDownloader
         if (preg_match('{^[a-f0-9]{40}$}', $reference)) {
             // add 'v' in front of the branch if it was stripped when generating the pretty name
             if (!preg_match('{^\s+composer/'.preg_quote($branch).'$}m', $branches) && preg_match('{^\s+composer/v'.preg_quote($branch).'$}m', $branches)) {
-                $branch = 'v' . $branch;
+                $branch = 'v'.$branch;
             }
 
             $command = sprintf('git checkout %s', ProcessExecutor::escape($branch));
@@ -264,7 +265,7 @@ class GitDownloader extends VcsDownloader
             $this->io->write('    <warning>'.$reference.' is gone (history was rewritten?)</warning>');
         }
 
-        throw new \RuntimeException('Failed to execute ' . GitUtil::sanitizeUrl($command) . "\n\n" . $this->process->getErrorOutput());
+        throw new \RuntimeException('Failed to execute '.GitUtil::sanitizeUrl($command)."\n\n".$this->process->getErrorOutput());
     }
 
     protected function setPushUrl($path, $url)
@@ -274,7 +275,7 @@ class GitDownloader extends VcsDownloader
             $protocols = $this->config->get('github-protocols');
             $pushUrl = 'git@'.$match[1].':'.$match[2].'/'.$match[3].'.git';
             if ($protocols[0] !== 'git') {
-                $pushUrl = 'https://' . $match[1] . '/'.$match[2].'/'.$match[3].'.git';
+                $pushUrl = 'https://'.$match[1].'/'.$match[2].'/'.$match[3].'.git';
             }
             $cmd = sprintf('git remote set-url --push origin %s', ProcessExecutor::escape($pushUrl));
             $this->process->execute($cmd, $ignoredOutput, $path);
@@ -290,7 +291,7 @@ class GitDownloader extends VcsDownloader
         $command = sprintf('git log %s..%s --pretty=format:"%%h - %%an: %%s"', $fromReference, $toReference);
 
         if (0 !== $this->process->execute($command, $output, $path)) {
-            throw new \RuntimeException('Failed to execute ' . $command . "\n\n" . $this->process->getErrorOutput());
+            throw new \RuntimeException('Failed to execute '.$command."\n\n".$this->process->getErrorOutput());
         }
 
         return $output;
@@ -298,6 +299,7 @@ class GitDownloader extends VcsDownloader
 
     /**
      * @param $path
+     *
      * @throws \RuntimeException
      */
     protected function discardChanges($path)
@@ -310,6 +312,7 @@ class GitDownloader extends VcsDownloader
 
     /**
      * @param $path
+     *
      * @throws \RuntimeException
      */
     protected function stashChanges($path)
@@ -337,7 +340,7 @@ class GitDownloader extends VcsDownloader
                 return $path;
             }
 
-            $path = rtrim(realpath($basePath) . '/' . implode('/', $removed), '/');
+            $path = rtrim(realpath($basePath).'/'.implode('/', $removed), '/');
         }
 
         return $path;

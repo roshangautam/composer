@@ -33,13 +33,14 @@ class ProjectInstaller implements InstallerInterface
     {
         $this->installPath = rtrim(strtr($installPath, '\\', '/'), '/').'/';
         $this->downloadManager = $dm;
-        $this->filesystem = new Filesystem;
+        $this->filesystem = new Filesystem();
     }
 
     /**
-     * Decides if the installer supports the given type
+     * Decides if the installer supports the given type.
      *
-     * @param  string $packageType
+     * @param string $packageType
+     *
      * @return bool
      */
     public function supports($packageType)
@@ -87,10 +88,11 @@ class ProjectInstaller implements InstallerInterface
     }
 
     /**
-     * Returns the installation path of a package
+     * Returns the installation path of a package.
      *
-     * @param  PackageInterface $package
-     * @return string           path
+     * @param PackageInterface $package
+     *
+     * @return string path
      */
     public function getInstallPath(PackageInterface $package)
     {

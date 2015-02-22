@@ -17,7 +17,7 @@ use Composer\IO\IOInterface;
 use Composer\EventDispatcher\Event as BaseEvent;
 
 /**
- * The script event class
+ * The script event class.
  *
  * @author François Pluchino <francois.pluchino@opendisplay.com>
  * @author Nils Adermann <naderman@naderman.de>
@@ -78,7 +78,7 @@ class Event extends BaseEvent
     }
 
     /**
-     * Return the dev mode flag
+     * Return the dev mode flag.
      *
      * @return boolean
      */

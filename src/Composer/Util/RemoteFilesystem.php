@@ -84,7 +84,7 @@ class RemoteFilesystem
     }
 
     /**
-     * Retrieve the options set in the constructor
+     * Retrieve the options set in the constructor.
      *
      * @return array Options
      */
@@ -94,7 +94,7 @@ class RemoteFilesystem
     }
 
     /**
-     * Returns the headers of the last request
+     * Returns the headers of the last request.
      *
      * @return array
      */
@@ -146,10 +146,10 @@ class RemoteFilesystem
         $options = $this->getOptionsForUrl($originUrl, $additionalOptions);
 
         if ($this->io->isDebug()) {
-            $this->io->write((substr($fileUrl, 0, 4) === 'http' ? 'Downloading ' : 'Reading ') . $fileUrl);
+            $this->io->write((substr($fileUrl, 0, 4) === 'http' ? 'Downloading ' : 'Reading ').$fileUrl);
         }
         if (isset($options['github-token'])) {
-            $fileUrl .= (false === strpos($fileUrl, '?') ? '?' : '&') . 'access_token='.$options['github-token'];
+            $fileUrl .= (false === strpos($fileUrl, '?') ? '?' : '&').'access_token='.$options['github-token'];
             unset($options['github-token']);
         }
         if (isset($options['http'])) {
@@ -282,12 +282,13 @@ class RemoteFilesystem
     /**
      * Get notification action.
      *
-     * @param  integer            $notificationCode The notification code
-     * @param  integer            $severity         The severity level
-     * @param  string             $message          The message
-     * @param  integer            $messageCode      The message code
-     * @param  integer            $bytesTransferred The loaded size
-     * @param  integer            $bytesMax         The total size
+     * @param integer $notificationCode The notification code
+     * @param integer $severity         The severity level
+     * @param string  $message          The message
+     * @param integer $messageCode      The message code
+     * @param integer $bytesTransferred The loaded size
+     * @param integer $bytesMax         The total size
+     *
      * @throws TransportException
      */
     protected function callbackGet($notificationCode, $severity, $message, $messageCode, $bytesTransferred, $bytesMax)
@@ -358,17 +359,17 @@ class RemoteFilesystem
             // fail if the console is not interactive
             if (!$this->io->isInteractive()) {
                 if ($httpStatus === 401) {
-                    $message = "The '" . $this->fileUrl . "' URL required authentication.\nYou must be using the interactive console to authenticate";
+                    $message = "The '".$this->fileUrl."' URL required authentication.\nYou must be using the interactive console to authenticate";
                 }
                 if ($httpStatus === 403) {
-                    $message = "The '" . $this->fileUrl . "' URL could not be accessed: " . $reason;
+                    $message = "The '".$this->fileUrl."' URL could not be accessed: ".$reason;
                 }
 
                 throw new TransportException($message, $httpStatus);
             }
             // fail if we already have auth
             if ($this->io->hasAuthentication($this->originUrl)) {
-                throw new TransportException("Invalid credentials for '" . $this->fileUrl . "', aborting.", $httpStatus);
+                throw new TransportException("Invalid credentials for '".$this->fileUrl."', aborting.", $httpStatus);
             }
 
             $this->io->overwrite('    Authentication required (<info>'.parse_url($this->fileUrl, PHP_URL_HOST).'</info>):');
@@ -385,9 +386,9 @@ class RemoteFilesystem
     protected function getOptionsForUrl($originUrl, $additionalOptions)
     {
         if (defined('HHVM_VERSION')) {
-            $phpVersion = 'HHVM ' . HHVM_VERSION;
+            $phpVersion = 'HHVM '.HHVM_VERSION;
         } else {
-            $phpVersion = 'PHP ' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+            $phpVersion = 'PHP '.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION;
         }
 
         $headers = array(
@@ -397,7 +398,7 @@ class RemoteFilesystem
                 php_uname('s'),
                 php_uname('r'),
                 $phpVersion
-            )
+            ),
         );
 
         if (extension_loaded('zlib')) {
@@ -411,7 +412,7 @@ class RemoteFilesystem
             if ('github.com' === $originUrl && 'x-oauth-basic' === $auth['password']) {
                 $options['github-token'] = $auth['username'];
             } else {
-                $authStr = base64_encode($auth['username'] . ':' . $auth['password']);
+                $authStr = base64_encode($auth['username'].':'.$auth['password']);
                 $headers[] = 'Authorization: Basic '.$authStr;
             }
         }

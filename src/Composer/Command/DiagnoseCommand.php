@@ -104,10 +104,10 @@ EOT
                 $output->writeln('<warning>WARNING</warning>');
                 $output->writeln(sprintf(
                     '<comment>Github has a rate limit on their API. '
-                    . 'You currently have <options=bold>%u</options=bold> '
-                    . 'out of <options=bold>%u</options=bold> requests left.' . PHP_EOL
-                    . 'See https://developer.github.com/v3/#rate-limiting and also' . PHP_EOL
-                    . '    https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens</comment>',
+                    .'You currently have <options=bold>%u</options=bold> '
+                    .'out of <options=bold>%u</options=bold> requests left.'.PHP_EOL
+                    .'See https://developer.github.com/v3/#rate-limiting and also'.PHP_EOL
+                    .'    https://getcomposer.org/doc/articles/troubleshooting.md#api-rate-limit-and-oauth-tokens</comment>',
                     $rate['remaining'],
                     $rate['limit']
                 ));
@@ -139,7 +139,7 @@ EOT
             $output = '';
             foreach ($messages as $style => $msgs) {
                 foreach ($msgs as $msg) {
-                    $output .=  '<' . $style . '>' . $msg . '</' . $style . '>' . PHP_EOL;
+                    $output .=  '<'.$style.'>'.$msg.'</'.$style.'>'.PHP_EOL;
                 }
             }
 
@@ -163,7 +163,7 @@ EOT
     {
         $protocol = extension_loaded('openssl') ? 'https' : 'http';
         try {
-            $this->rfs->getContents('packagist.org', $protocol . '://packagist.org/packages.json', false);
+            $this->rfs->getContents('packagist.org', $protocol.'://packagist.org/packages.json', false);
         } catch (\Exception $e) {
             return $e;
         }
@@ -175,11 +175,11 @@ EOT
     {
         $protocol = extension_loaded('openssl') ? 'https' : 'http';
         try {
-            $json = json_decode($this->rfs->getContents('packagist.org', $protocol . '://packagist.org/packages.json', false), true);
+            $json = json_decode($this->rfs->getContents('packagist.org', $protocol.'://packagist.org/packages.json', false), true);
             $hash = reset($json['provider-includes']);
             $hash = $hash['sha256'];
             $path = str_replace('%hash%', $hash, key($json['provider-includes']));
-            $provider = $this->rfs->getContents('packagist.org', $protocol . '://packagist.org/'.$path, false);
+            $provider = $this->rfs->getContents('packagist.org', $protocol.'://packagist.org/'.$path, false);
 
             if (hash('sha256', $provider) !== $hash) {
                 return 'It seems that your proxy is modifying http traffic on the fly';
@@ -252,7 +252,7 @@ EOT
             $url = $domain === 'github.com' ? 'https://api.'.$domain.'/user/repos' : 'https://'.$domain.'/api/v3/user/repos';
 
             return $this->rfs->getContents($domain, $url, false, array(
-                'retry-auth-failure' => false
+                'retry-auth-failure' => false,
             )) ? true : 'Unexpected error';
         } catch (\Exception $e) {
             if ($e instanceof TransportException && $e->getCode() === 401) {
@@ -299,7 +299,7 @@ EOT
     private function checkVersion()
     {
         $protocol = extension_loaded('openssl') ? 'https' : 'http';
-        $latest = trim($this->rfs->getContents('getcomposer.org', $protocol . '://getcomposer.org/version', false));
+        $latest = trim($this->rfs->getContents('getcomposer.org', $protocol.'://getcomposer.org/version', false));
 
         if (Composer::VERSION !== $latest && Composer::VERSION !== '@package_version@') {
             return '<comment>You are not running the latest version</comment>';
@@ -337,7 +337,7 @@ EOT
         $iniPath = php_ini_loaded_file();
         $displayIniMessage = false;
         if ($iniPath) {
-            $iniMessage = PHP_EOL.PHP_EOL.'The php.ini used by your command-line PHP is: ' . $iniPath;
+            $iniMessage = PHP_EOL.PHP_EOL.'The php.ini used by your command-line PHP is: '.$iniPath;
         } else {
             $iniMessage = PHP_EOL.PHP_EOL.'A php.ini file does not exist. You will have to create one.';
         }

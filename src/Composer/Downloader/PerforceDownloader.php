@@ -31,7 +31,7 @@ class PerforceDownloader extends VcsDownloader
         $ref = $package->getSourceReference();
         $label = $this->getLabelFromSourceReference($ref);
 
-        $this->io->write('    Cloning ' . $ref);
+        $this->io->write('    Cloning '.$ref);
         $this->initPerforce($package, $path, $url);
         $this->perforce->setStream($ref);
         $this->perforce->p4Login($this->io);
@@ -43,12 +43,12 @@ class PerforceDownloader extends VcsDownloader
 
     private function getLabelFromSourceReference($ref)
     {
-        $pos = strpos($ref,'@');
+        $pos = strpos($ref, '@');
         if (false !== $pos) {
             return substr($ref, $pos + 1);
         }
 
-        return null;
+        return;
     }
 
     public function initPerforce($package, $path, $url)

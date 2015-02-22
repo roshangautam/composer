@@ -18,7 +18,7 @@ use Composer\Package\CompletePackageInterface;
 use Composer\Package\Version\VersionParser;
 
 /**
- * A repository implementation that simply stores packages in an array
+ * A repository implementation that simply stores packages in an array.
  *
  * @author Nils Adermann <naderman@naderman.de>
  */
@@ -89,7 +89,7 @@ class ArrayRepository implements RepositoryInterface
                 continue;
             }
             if (preg_match($regex, $name)
-                || ($mode === self::SEARCH_FULLTEXT && $package instanceof CompletePackageInterface && preg_match($regex, implode(' ', (array) $package->getKeywords()) . ' ' . $package->getDescription()))
+                || ($mode === self::SEARCH_FULLTEXT && $package instanceof CompletePackageInterface && preg_match($regex, implode(' ', (array) $package->getKeywords()).' '.$package->getDescription()))
             ) {
                 $matches[$name] = array(
                     'name' => $package->getPrettyName(),
@@ -118,7 +118,7 @@ class ArrayRepository implements RepositoryInterface
     }
 
     /**
-     * Adds a new package to the repository
+     * Adds a new package to the repository.
      *
      * @param PackageInterface $package
      */
@@ -174,7 +174,7 @@ class ArrayRepository implements RepositoryInterface
     }
 
     /**
-     * Returns the number of packages in this repository
+     * Returns the number of packages in this repository.
      *
      * @return int Number of packages
      */

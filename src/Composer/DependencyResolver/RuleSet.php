@@ -23,7 +23,7 @@ class RuleSet implements \IteratorAggregate, \Countable
     const TYPE_LEARNED = 4;
 
     /**
-     * READ-ONLY: Lookup table for rule id to rule object
+     * READ-ONLY: Lookup table for rule id to rule object.
      *
      * @var Rule[]
      */
@@ -55,7 +55,7 @@ class RuleSet implements \IteratorAggregate, \Countable
     public function add(Rule $rule, $type)
     {
         if (!isset(self::$types[$type])) {
-            throw new \OutOfBoundsException('Unknown rule type: ' . $type);
+            throw new \OutOfBoundsException('Unknown rule type: '.$type);
         }
 
         if (!isset($this->rules[$type])) {
@@ -154,7 +154,7 @@ class RuleSet implements \IteratorAggregate, \Countable
     {
         $string = "\n";
         foreach ($this->rules as $type => $rules) {
-            $string .= str_pad(self::$types[$type], 8, ' ') . ": ";
+            $string .= str_pad(self::$types[$type], 8, ' ').": ";
             foreach ($rules as $rule) {
                 $string .= ($pool ? $rule->getPrettyString($pool) : $rule)."\n";
             }

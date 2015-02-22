@@ -41,7 +41,7 @@ class GitDriver extends VcsDriver
             $this->repoDir = $this->url;
             $cacheUrl = realpath($this->url);
         } else {
-            $this->repoDir = $this->config->get('cache-vcs-dir') . '/' . preg_replace('{[^a-z0-9.]}i', '-', $this->url) . '/';
+            $this->repoDir = $this->config->get('cache-vcs-dir').'/'.preg_replace('{[^a-z0-9.]}i', '-', $this->url).'/';
 
             GitUtil::cleanEnv();
 
@@ -134,7 +134,7 @@ class GitDriver extends VcsDriver
      */
     public function getDist($identifier)
     {
-        return null;
+        return;
     }
 
     /**
@@ -242,7 +242,7 @@ class GitDriver extends VcsDriver
         }
 
         $process = new ProcessExecutor($io);
-        if($process->execute('git ls-remote --heads ' . ProcessExecutor::escape($url), $output) === 0) {
+        if ($process->execute('git ls-remote --heads '.ProcessExecutor::escape($url), $output) === 0) {
             return true;
         }
 

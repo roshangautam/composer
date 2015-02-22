@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * ValidateCommand
+ * ValidateCommand.
  *
  * @author Robert Schönthal <seroscho@googlemail.com>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ValidateCommand extends Command
 {
     /**
-     * configure
+     * configure.
      */
     protected function configure()
     {
@@ -37,7 +37,7 @@ class ValidateCommand extends Command
             ->setDescription('Validates a composer.json')
             ->setDefinition(array(
                 new InputOption('no-check-all', null, InputOption::VALUE_NONE, 'Do not make a complete validation'),
-                new InputArgument('file', InputArgument::OPTIONAL, 'path to composer.json file', './composer.json')
+                new InputArgument('file', InputArgument::OPTIONAL, 'path to composer.json file', './composer.json'),
             ))
             ->setHelp(<<<EOT
 The validate command validates a given composer.json
@@ -57,12 +57,12 @@ EOT
         $file = $input->getArgument('file');
 
         if (!file_exists($file)) {
-            $output->writeln('<error>' . $file . ' not found.</error>');
+            $output->writeln('<error>'.$file.' not found.</error>');
 
             return 1;
         }
         if (!is_readable($file)) {
-            $output->writeln('<error>' . $file . ' is not readable.</error>');
+            $output->writeln('<error>'.$file.' is not readable.</error>');
 
             return 1;
         }
@@ -73,16 +73,16 @@ EOT
 
         // output errors/warnings
         if (!$errors && !$publishErrors && !$warnings) {
-            $output->writeln('<info>' . $file . ' is valid</info>');
+            $output->writeln('<info>'.$file.' is valid</info>');
         } elseif (!$errors && !$publishErrors) {
-            $output->writeln('<info>' . $file . ' is valid, but with a few warnings</info>');
+            $output->writeln('<info>'.$file.' is valid, but with a few warnings</info>');
             $output->writeln('<warning>See http://getcomposer.org/doc/04-schema.md for details on the schema</warning>');
         } elseif (!$errors) {
-            $output->writeln('<info>' . $file . ' is valid for simple usage with composer but has</info>');
+            $output->writeln('<info>'.$file.' is valid for simple usage with composer but has</info>');
             $output->writeln('<info>strict errors that make it unable to be published as a package:</info>');
             $output->writeln('<warning>See http://getcomposer.org/doc/04-schema.md for details on the schema</warning>');
         } else {
-            $output->writeln('<error>' . $file . ' is invalid, the following errors/warnings were found:</error>');
+            $output->writeln('<error>'.$file.' is invalid, the following errors/warnings were found:</error>');
         }
 
         $messages = array(
@@ -92,7 +92,7 @@ EOT
 
         foreach ($messages as $style => $msgs) {
             foreach ($msgs as $msg) {
-                $output->writeln('<' . $style . '>' . $msg . '</' . $style . '>');
+                $output->writeln('<'.$style.'>'.$msg.'</'.$style.'>');
             }
         }
 
